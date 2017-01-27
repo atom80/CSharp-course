@@ -41,7 +41,7 @@ namespace TaskManagerConsole {
         public void Unlock() { }
 
         public static User[] GetUsers() {
-            User[] users;
+            User[] users=null;
 
             return users;
         }

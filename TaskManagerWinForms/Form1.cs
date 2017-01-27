@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace TaskManagerWinForms {
     public partial class Form1 : Form {
-        TaskManagerConsole.TaskManager vTaskManager = new TaskManagerConsole.TaskManager();
+        TaskManagerConsole.TaskManager vTaskManager = new TaskManagerConsole.TaskManager(new TaskManagerConsole.Storage(), new AuthForms());
         public Form1() {
             this.Visible = false;
             InitializeComponent();
