@@ -40,6 +40,12 @@ namespace TaskManagerConsole {
         [UserAction("Unlock user account")]
         public void Unlock() { }
 
+        public static User[] GetUsers() {
+            User[] users;
+
+            return users;
+        }
+
         public static User UserFactory(UserTypes userType) {
             User user = null;
             switch (userType) {
