@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace TaskManagerConsole {
     public enum UserTypes {
-        Unknown =-1,
+        Unknown = -1,
         Administrator = 0,
         Manager = 1,
         Developer = 2
     }
-    
+
     public enum UserState {
-        Locked=0,
-        Unlocked=1
+        Locked = 0,
+        Unlocked = 1
     }
-    
+
     [UserAction("Accounts")]
     public abstract class User {
         private string vName = "";
@@ -40,7 +40,20 @@ namespace TaskManagerConsole {
         [UserAction("Unlock user account")]
         public void Unlock() { }
 
-        public static User UserFactory
+        public static User UserFactory(UserTypes userType) {
+            User user = null;
+            switch (userType) {
+                case UserTypes.Administrator: { }
+                break;
+                case UserTypes.Developer: { }
+                break;
+                case UserTypes.Manager: { }
+                break;
+                default:
+                break;
+            }
+            return user;
+        }
 
     }
 }
