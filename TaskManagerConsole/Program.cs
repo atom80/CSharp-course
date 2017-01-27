@@ -12,7 +12,7 @@ namespace TaskManagerConsole {
         }
 
         static void Main(string[] args) {
-            TaskManager vTaskManager = new TaskManager();
+            TaskManager vTaskManager = new TaskManager(new Storage(), new AuthConsole());
             //Console.Write("Login: ");
             //string login = Console.ReadLine();
             //Console.Write("Password: ");

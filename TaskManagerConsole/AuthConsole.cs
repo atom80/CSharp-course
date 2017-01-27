@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManagerConsole {
-    public interface IAuthenticator {
-        bool AuthenticateUser(string userName);
+    class AuthConsole:Authenticator {
     }
 }

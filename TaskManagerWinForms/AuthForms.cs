@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagerConsole;
 
-namespace TaskManagerConsole {
-    public interface IAuthenticator {
-        bool AuthenticateUser(string userName);
+namespace TaskManagerWinForms {
+    class AuthForms:TaskManagerConsole.Authenticator{
     }
 }

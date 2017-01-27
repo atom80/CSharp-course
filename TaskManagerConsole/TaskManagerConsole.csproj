@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="Admin.cs" />
     <Compile Include="Attributes.cs" />
+    <Compile Include="AuthConsole.cs" />
+    <Compile Include="Authenticator.cs" />
     <Compile Include="Defect.cs" />
     <Compile Include="Developer.cs" />
     <Compile Include="DevTask.cs" />
@@ -81,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
