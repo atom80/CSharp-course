@@ -17,6 +17,10 @@ namespace TaskManagerConsole {
 
         private IAuthenticator vAuthenticator;
 
+        public bool TryLogon(string userName, string userPassword) {
+                return vAuthenticator.AuthenticateUser(userName, userPassword);
+            }
+
         public string[] Users {
             get {
                 string[] userList = new string[vUsers.Count];

@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace TaskManagerConsole {
     public interface IAuthenticator {
-        bool AuthenticateUser(string userName);
+        bool AuthenticateUser(string userName, string userPassword);
     }
 }
