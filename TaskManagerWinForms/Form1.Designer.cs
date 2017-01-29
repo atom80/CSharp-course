@@ -45,8 +45,8 @@
             this.comboBoxUserName = new System.Windows.Forms.ComboBox();
             this.panelAuth = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.tabPageUserFunctions = new System.Windows.Forms.TabPage();
+            this.btnLogon = new System.Windows.Forms.Button();
+            this.tabPageUserActions = new System.Windows.Forms.TabPage();
             this.panelUserActions = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPageReflection = new System.Windows.Forms.TabPage();
@@ -59,7 +59,7 @@
             this.tablessTabControl1.SuspendLayout();
             this.tabPageAuthorization.SuspendLayout();
             this.panelAuth.SuspendLayout();
-            this.tabPageUserFunctions.SuspendLayout();
+            this.tabPageUserActions.SuspendLayout();
             this.panelUserActions.SuspendLayout();
             this.tabPageReflection.SuspendLayout();
             this.panelCaptionClassMap.SuspendLayout();
@@ -167,7 +167,7 @@
             // tablessTabControl1
             // 
             this.tablessTabControl1.Controls.Add(this.tabPageAuthorization);
-            this.tablessTabControl1.Controls.Add(this.tabPageUserFunctions);
+            this.tablessTabControl1.Controls.Add(this.tabPageUserActions);
             this.tablessTabControl1.Controls.Add(this.tabPageReflection);
             this.tablessTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablessTabControl1.Location = new System.Drawing.Point(0, 0);
@@ -185,7 +185,7 @@
             this.tabPageAuthorization.Controls.Add(this.lblUserName);
             this.tabPageAuthorization.Controls.Add(this.comboBoxUserName);
             this.tabPageAuthorization.Controls.Add(this.panelAuth);
-            this.tabPageAuthorization.Controls.Add(this.button1);
+            this.tabPageAuthorization.Controls.Add(this.btnLogon);
             this.tabPageAuthorization.Location = new System.Drawing.Point(4, 22);
             this.tabPageAuthorization.Name = "tabPageAuthorization";
             this.tabPageAuthorization.Padding = new System.Windows.Forms.Padding(3);
@@ -279,26 +279,26 @@
             this.label2.Text = "Authorization";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // button1
+            // btnLogon
             // 
-            this.button1.Location = new System.Drawing.Point(475, 143);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "Go!";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnLogon.Location = new System.Drawing.Point(475, 143);
+            this.btnLogon.Name = "btnLogon";
+            this.btnLogon.Size = new System.Drawing.Size(75, 23);
+            this.btnLogon.TabIndex = 3;
+            this.btnLogon.Text = "Go!";
+            this.btnLogon.UseVisualStyleBackColor = true;
+            this.btnLogon.Click += new System.EventHandler(this.button1_Click);
             // 
-            // tabPageUserFunctions
+            // tabPageUserActions
             // 
-            this.tabPageUserFunctions.BackColor = System.Drawing.SystemColors.Control;
-            this.tabPageUserFunctions.Controls.Add(this.panelUserActions);
-            this.tabPageUserFunctions.Location = new System.Drawing.Point(4, 22);
-            this.tabPageUserFunctions.Name = "tabPageUserFunctions";
-            this.tabPageUserFunctions.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageUserFunctions.Size = new System.Drawing.Size(988, 503);
-            this.tabPageUserFunctions.TabIndex = 0;
-            this.tabPageUserFunctions.Text = "tabPageUserFunctions";
+            this.tabPageUserActions.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageUserActions.Controls.Add(this.panelUserActions);
+            this.tabPageUserActions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageUserActions.Name = "tabPageUserActions";
+            this.tabPageUserActions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageUserActions.Size = new System.Drawing.Size(988, 503);
+            this.tabPageUserActions.TabIndex = 0;
+            this.tabPageUserActions.Text = "tabPageUserActions";
             // 
             // panelUserActions
             // 
@@ -385,7 +385,7 @@
             this.tabPageAuthorization.ResumeLayout(false);
             this.tabPageAuthorization.PerformLayout();
             this.panelAuth.ResumeLayout(false);
-            this.tabPageUserFunctions.ResumeLayout(false);
+            this.tabPageUserActions.ResumeLayout(false);
             this.panelUserActions.ResumeLayout(false);
             this.tabPageReflection.ResumeLayout(false);
             this.panelCaptionClassMap.ResumeLayout(false);
@@ -406,7 +406,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private TablessTabControl tablessTabControl1;
-        private System.Windows.Forms.TabPage tabPageUserFunctions;
+        private System.Windows.Forms.TabPage tabPageUserActions;
         private System.Windows.Forms.TabPage tabPageReflection;
         private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reflectionToolStripMenuItem;
@@ -414,7 +414,7 @@
         private System.Windows.Forms.Panel panelCaptionClassMap;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage tabPageAuthorization;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLogon;
         private System.Windows.Forms.Panel panelAuth;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panelUserActions;

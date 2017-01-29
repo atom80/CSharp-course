@@ -5,21 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
 
     public class TaskManager {
         private TMTimer vTimer;
         public TMTimer Timer { get { return vTimer; } }
         private List<User> vUsers = new List<User>();
-        
+
+        private List<UserSession> vUserSessions;
+
         private IStorage vStorage;
         public IStorage Storage { get { return vStorage; } }
 
         private IAuthenticator vAuthenticator;
 
-        public bool TryLogon(string userName, string userPassword) {
-                return vAuthenticator.AuthenticateUser(userName, userPassword);
-            }
+        public bool LogonUser() {
+            vUserSessions.Add(vAuthenticator.AuthenticateUser(vStorage));
+            return true;
+        }
 
         public string[] Users {
             get {
@@ -31,11 +34,11 @@ namespace TaskManagerConsole {
             }
         }
 
-
         public TaskManager(IStorage storage, IAuthenticator auth) {
             vTimer = new TMTimer(this);
             vStorage = storage;
             vAuthenticator = auth;
+            vUserSessions = new List<UserSession>();
             //vUsers.Load();
         }
 

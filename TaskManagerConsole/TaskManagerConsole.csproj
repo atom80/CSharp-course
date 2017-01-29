@@ -7,7 +7,7 @@
     <ProjectGuid>{747592C2-F8C4-4057-B8C8-D25790B8D394}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TaskManagerConsole</RootNamespace>
+    <RootNamespace>TaskManagerCore</RootNamespace>
     <AssemblyName>TaskManagerConsole</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -57,29 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Admin.cs" />
-    <Compile Include="Attributes.cs" />
     <Compile Include="AuthConsole.cs" />
-    <Compile Include="Authenticator.cs" />
-    <Compile Include="Defect.cs" />
-    <Compile Include="Developer.cs" />
-    <Compile Include="DevTask.cs" />
-    <Compile Include="Feature.cs" />
-    <Compile Include="IAuthenticator.cs" />
-    <Compile Include="ITask.cs" />
-    <Compile Include="Manager.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionInfo.cs" />
-    <Compile Include="Sprint.cs" />
-    <Compile Include="Storage.cs" />
-    <Compile Include="Task.cs" />
-    <Compile Include="TaskManager.cs" />
-    <Compile Include="TestTask.cs" />
-    <Compile Include="TMTimer.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="UserStory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -103,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TaskManagerCore\TaskManagerCore.csproj">
+      <Project>{3d4b5418-8307-4e37-85aa-b3510f14f759}</Project>
+      <Name>TaskManagerCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

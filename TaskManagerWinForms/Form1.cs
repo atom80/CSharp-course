@@ -8,12 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
-using TaskManagerConsole;
+using TaskManagerCore;
 using System.Reflection;
 
 namespace TaskManagerWinForms {
     public partial class Form1 : Form {
-        TaskManagerConsole.TaskManager vTaskManager = new TaskManagerConsole.TaskManager(new TaskManagerConsole.Storage(), new AuthForms());
+        TaskManagerCore.TaskManager vTaskManager = new TaskManagerCore.TaskManager(new TaskManagerCore.Storage(), new AuthForms());
         public Form1() {
             //this.Visible = false;
             InitializeComponent();
@@ -89,10 +89,10 @@ namespace TaskManagerWinForms {
 
         private void button1_Click(object sender, EventArgs e) {
             try {
-                if (vTaskManager.TryLogon(comboBoxUserName.Text, textBoxPassword.Text)) {
+                if (vTaskManager.LogonUser()) {
                     menuStrip1.Enabled = true;
                     menuStrip1.Visible = true;
-                    tablessTabControl1.SelectedTab = tabPageUserFunctions;
+                    tablessTabControl1.SelectedTab = tabPageUserActions;
                 }
             } catch (Exception exc) {
                 lblErrorMessage.Text = "Authorization failed: "+exc.Message;
@@ -100,7 +100,7 @@ namespace TaskManagerWinForms {
         }
 
         private void userActionsToolStripMenuItem_Click(object sender, EventArgs e) {
-            tablessTabControl1.SelectedTab = tabPageUserFunctions;
+            tablessTabControl1.SelectedTab = tabPageUserActions;
         }
 
 

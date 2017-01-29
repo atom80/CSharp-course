@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagerCore;
 
 namespace TaskManagerConsole {
     class Program {
@@ -13,12 +14,21 @@ namespace TaskManagerConsole {
 
         static void Main(string[] args) {
             TaskManager vTaskManager = new TaskManager(new Storage(), new AuthConsole());
-            //Console.Write("Login: ");
-            //string login = Console.ReadLine();
-            //Console.Write("Password: ");
-            //string password = Console.ReadLine();
-            vTaskManager.Timer.TMOnTimer+= OnTmTimer;
-            vTaskManager.Run();
+            Console.Title = "TaskManager v.0.1";
+            Console.WriteLine("TaskManager v.0.1");
+            bool isLogged=false;
+            do {
+                try {
+                    isLogged = vTaskManager.LogonUser();
+                } catch (Exception e) {
+                    isLogged = false;
+                    Console.WriteLine("\n"+e.Message);
+                }
+
+            } while (!isLogged);
+            
+            //vTaskManager.Timer.TMOnTimer+= OnTmTimer;
+            //vTaskManager.Run();
             Console.Write("Done");
             Console.ReadLine();
         }

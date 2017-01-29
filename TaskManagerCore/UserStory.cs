@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
-    class Project {
+namespace TaskManagerCore {
+    class UserStory:Task {
     }
 }

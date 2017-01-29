@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
     public class ReflectionInfo {
         private Assembly vAssembly = Assembly.GetExecutingAssembly();
         public Assembly Assembly { get { return vAssembly; } }

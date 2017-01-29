@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
     public class TMTimerEventArgs : EventArgs {
         public decimal TickCount { get; set; }
     }

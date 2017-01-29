@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
-    class Feature:Task {
+namespace TaskManagerCore {
+    class Sprint {
     }
 }

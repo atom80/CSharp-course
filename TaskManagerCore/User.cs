@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
     public enum UserTypes {
         Unknown = -1,
         Administrator = 0,
@@ -12,21 +12,21 @@ namespace TaskManagerConsole {
         Developer = 2
     }
 
-    public enum UserState {
+    public enum UserStates {
         Locked = 0,
         Unlocked = 1
     }
 
     [UserAction("Accounts")]
     public abstract class User {
-        private string vName = "";
-        public string Name { get { return vName; } }
+        private string vUserName = "";
+        public string UserName { get { return vUserName; } }
 
         private UserTypes vUserType = UserTypes.Unknown;
         public UserTypes UserType { get { return vUserType; } }
 
-        private UserState vUserState = UserState.Locked;
-        public UserState UserState { get { return vUserState; } }
+        private UserStates vUserState = UserStates.Locked;
+        public UserStates UserState { get { return vUserState; } }
 
         [UserAction("Create user account")]
         public void Create() { }
@@ -46,14 +46,20 @@ namespace TaskManagerConsole {
             return users;
         }
 
-        public static User UserFactory(UserTypes userType) {
-            User user = null;
-            switch (userType) {
-                case UserTypes.Administrator: { }
+        public User(string userName,UserTypes userType,UserStates userState) {
+            vUserName = userName;
+            vUserType = userType;
+            vUserState = userState;
+        }
+
+        public static User UserFactory(string userName, IStorage storage) {
+            User user = storage.GetUser(userName);
+            switch (user.UserType) {
+                case UserTypes.Administrator: { user = new Admin(userName); }
                 break;
-                case UserTypes.Developer: { }
+                case UserTypes.Developer: { user = new Developer(userName); }
                 break;
-                case UserTypes.Manager: { }
+                case UserTypes.Manager: { user = new Manager(userName); }
                 break;
                 default:
                 break;
