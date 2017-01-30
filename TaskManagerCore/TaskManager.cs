@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Collections.Concurrent;
+using System.Collections.Generic; 
 
 namespace TaskManagerCore {
 
@@ -12,6 +14,8 @@ namespace TaskManagerCore {
         public TMTimer Timer { get { return vTimer; } }
         private List<User> vUsers = new List<User>();
         UserSession vMainUserSession;
+
+        private bool vIsInShutdown = false;
 
         private List<UserSession> vUserSessions;
         public List<UserSession> UserSessions { get { return vUserSessions; } }
@@ -24,7 +28,16 @@ namespace TaskManagerCore {
         public event SessionChangedHandler SessionChangedEvent;
 
         public void SessionChangedHandler(UserSession session, SessionChangeType change) {
-            if (SessionChangedEvent != null) {
+            if ((session.SessionType!=UserSessionTypes.Automatic) && (change != SessionChangeType.Started)) {
+                vMainUserSession = null;
+                change = SessionChangeType.MainSessionStopped;
+            }
+            if (change != SessionChangeType.Started) {
+                lock (this) {
+                    vUserSessions.Remove(session);
+                }
+            }
+            if ((SessionChangedEvent != null)&&(!vIsInShutdown)) {
                 SessionChangedEvent(session, change);
             }
         }
@@ -32,7 +45,10 @@ namespace TaskManagerCore {
         public void LogonUser() {
             vMainUserSession = vAuthenticator.AuthenticateUser();
             vMainUserSession.SessionChangedEvent += SessionChangedHandler;
-            vUserSessions.Add(vMainUserSession);
+            lock (this) {
+                vUserSessions.Add(vMainUserSession);
+            }
+            vMainUserSession.Start();
         }
 
         public void LogonUser(int userCount) {
@@ -42,17 +58,22 @@ namespace TaskManagerCore {
             for (int i = 0; i < userCount; i++) {
                 bgUserName = string.Format("BackgroundUser{0}", i);
                 bgUser = new UserSession(null, UserSessionTypes.Automatic, TaskManagerCore.User.Factory(bgUserName, vStorage));
-                vUserSessions.Add(bgUser);
+                lock (this) {
+                    vUserSessions.Add(bgUser);
+                }
                 bgUser.SessionChangedEvent += SessionChangedHandler;
+                bgUser.Start();
             }
         }
 
         public void LogoffUser() {
             vMainUserSession.CancellationTokenSource.Cancel(false);
             Task.WaitAll(vMainUserSession.ActionHandler);
-            vUserSessions.Remove(vMainUserSession);
+            lock (this) {
+                vUserSessions.Remove(vMainUserSession);
+            }
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(vMainUserSession, SessionChangeType.Stopped);
+                SessionChangedEvent(vMainUserSession, SessionChangeType.MainSessionStopped);
             }
             vMainUserSession = null;
             Thread.Sleep(5000);
@@ -84,6 +105,7 @@ namespace TaskManagerCore {
         }
 
         public void Shutdown() {
+            vIsInShutdown = true;
             List<Task> taskList = new List<Task>();
             foreach (UserSession session in vUserSessions) {
                 session.CancellationTokenSource.Cancel(true);

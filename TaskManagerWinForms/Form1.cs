@@ -29,13 +29,27 @@ namespace TaskManagerWinForms {
             lblErrorMessage.Text = "";
         }
 
+        private delegate void FormSetAuthPage();
+        private void SetAuthPage() {
+            menuStrip1.Enabled = false;
+            menuStrip1.Visible = false;
+            tablessTabControl1.SelectedTab = tabPageAuthorization;
+        }
+
         public void SessionChangedHandler(UserSession session, SessionChangeType change) {
             switch (change) {
                 case SessionChangeType.Started:
-                case SessionChangeType.Stopped: {
-                    int sessionCount = (from UserSession us in vTaskManager.UserSessions where (us.ActionHandler.Status == TaskStatus.Running) select us).ToList().Count;
-                    lblUsersLoggedOn.Text = string.Format("Users: {0}", sessionCount);
-                }break;
+                case SessionChangeType.Stopped:
+                case SessionChangeType.MainSessionStopped: {
+                    lock (vTaskManager) {
+                        int sessionCount = (from UserSession us in vTaskManager.UserSessions where (us.ActionHandler.Status == TaskStatus.Running) select us).ToList().Count;
+                        lblUsersLoggedOn.Text = string.Format("Users: {0}", sessionCount);
+                    }
+                    if (change == SessionChangeType.MainSessionStopped) {
+                        this.Invoke(new FormSetAuthPage(SetAuthPage));
+                    }
+                }
+                break;
                 default:
                 break;
             }
@@ -140,7 +154,6 @@ namespace TaskManagerWinForms {
                 if ((sender as ComboBox).Text == "Administrator") {
                     textBoxPassword.Text = "Administrator";
                 }
-
             }
         }
 

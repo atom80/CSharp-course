@@ -14,12 +14,13 @@ namespace TaskManagerCore {
 
     public enum SessionChangeType {
         Started = 0,
-        Stopped = 1
+        Stopped = 1,
+        MainSessionStopped = 2
     }
 
     public delegate void SessionChangedHandler(UserSession session, SessionChangeType change);
     public class UserSession {
-        
+
         public event SessionChangedHandler SessionChangedEvent;
 
         private Guid vSessionId = Guid.NewGuid();
@@ -30,11 +31,11 @@ namespace TaskManagerCore {
         private readonly UserSessionTypes vSessionType;
         public UserSessionTypes SessionType { get { return vSessionType; } }
 
-        private readonly DateTime vSessionStartDateTime;
+        private DateTime vSessionStartDateTime;
         public DateTime SessionStartDateTime { get { return vSessionStartDateTime; } }
 
         private DateTime vSessionStopDatetime;
-        public DateTime SessionStopDateTime { get { return vSessionStopDatetime; }set{vSessionStopDatetime=value;} }
+        public DateTime SessionStopDateTime { get { return vSessionStopDatetime; } set { vSessionStopDatetime = value; } }
 
         private IAuthenticator vSessionAuthenticator;
 
@@ -44,19 +45,26 @@ namespace TaskManagerCore {
         public void DoHandleActions(object sender) {
             UserSession userSession = sender as UserSession;
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(userSession,SessionChangeType.Started);
+                SessionChangedEvent(userSession, SessionChangeType.Started);
             }
             int counter = 0;
             while (!userSession.CancellationTokenSource.IsCancellationRequested) {
-                Console.Write("{0}",Task.CurrentId);
+                Console.Write("{0}", Task.CurrentId);
                 Thread.Sleep(2000); // do some heavy work
-                if (counter++ > 10) { break; }
+                if (userSession.SessionType == UserSessionTypes.Automatic) {
+                    if (counter++ > 10) { break; }
+                }
             }
             Thread.Sleep(2000);
-            userSession.SessionStopDateTime=DateTime.Now;
+            userSession.SessionStopDateTime = DateTime.Now;
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(userSession,SessionChangeType.Stopped);
+                SessionChangedEvent(userSession, SessionChangeType.Stopped);
             }
+        }
+
+        public void Start() {
+            vSessionStartDateTime = DateTime.Now;
+            vActionHandler.Start();
         }
 
         public UserSession(IAuthenticator sessionAuth, UserSessionTypes sessionType, User sessionUser) {
@@ -64,12 +72,11 @@ namespace TaskManagerCore {
             vSessionAuthenticator = sessionAuth;
             vSessionUser = sessionUser;
             //vSessionAuthenticator.AuthenticateUser(sessionUser);
-            vSessionStartDateTime = DateTime.Now;
 
             vActionHandler = new Task(DoHandleActions, (object)this, CancellationTokenSource.Token, TaskCreationOptions.AttachedToParent | TaskCreationOptions.PreferFairness);
-            
+
             //vActionHandler=Task.Factory.StartNew(()=>DoHandleActions(this),vCancellationTokenSource.Token);
-            vActionHandler.Start();
+            //vActionHandler.Start();
             //Thread.Sleep(10000);
             //CancellationTokenSource.Cancel(false);
 
