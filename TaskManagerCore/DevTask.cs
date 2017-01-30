@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManagerCore {
-    class DevTask:Task {
+    class DevTask:BaseTask {
     }
 }

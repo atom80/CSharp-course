@@ -13,8 +13,12 @@ using System.Reflection;
 
 namespace TaskManagerWinForms {
     public partial class Form1 : Form {
-        TaskManagerCore.TaskManager vTaskManager = new TaskManagerCore.TaskManager(new TaskManagerCore.Storage(), new AuthForms());
+
+        TaskManagerCore.TaskManager vTaskManager;
         public Form1() {
+            IStorage storage = new Storage();
+            vTaskManager = new TaskManagerCore.TaskManager(storage, new AuthForms(this, storage));
+            vTaskManager.SessionChangedEvent += SessionChangedHandler;
             //this.Visible = false;
             InitializeComponent();
             //Thread.Sleep(2000);
@@ -25,16 +29,41 @@ namespace TaskManagerWinForms {
             lblErrorMessage.Text = "";
         }
 
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+        public void SessionChangedHandler(UserSession session, SessionChangeType change) {
+            switch (change) {
+                case SessionChangeType.Started:
+                case SessionChangeType.Stopped: {
+                    int sessionCount = (from UserSession us in vTaskManager.UserSessions where (us.ActionHandler.Status == TaskStatus.Running) select us).ToList().Count;
+                    lblUsersLoggedOn.Text = string.Format("Users: {0}", sessionCount);
+                }break;
+                default:
+                break;
+            }
+        }
+
+        public string[] GetCredentials() {
+            string[] credentials = new string[2];
+            credentials[0] = comboBoxUserName.Text;
+            credentials[1] = textBoxPassword.Text;
+            return credentials;
+        }
+
+        private async void exitToolStripMenuItem_Click(object sender, EventArgs e) {
+            menuStrip1.Enabled = false;
+            menuStrip1.Visible = false;
+            labelWaiting.Text = "Waiting for shutdown...";
+            tablessTabControl1.SelectedTab = tabPageWaiting;
+            Task taskShutdown = Task.Run(() => vTaskManager.Shutdown());
+            await taskShutdown;
             Application.Exit();
         }
 
         private void startToolStripMenuItem_Click(object sender, EventArgs e) {
             MessageBox.Show(vTaskManager.Timer.TimerInterval.ToString());
-            }
+        }
 
         private void reflectionToolStripMenuItem_Click(object sender, EventArgs e) {
-            tablessTabControl1.SelectedTab=tabPageReflection;
+            tablessTabControl1.SelectedTab = tabPageReflection;
         }
 
         private void tabPageReflection_Enter(object sender, EventArgs e) {
@@ -43,7 +72,7 @@ namespace TaskManagerWinForms {
             TreeNode classNode = treeView1.Nodes.Add("Classes");
             //Font newFnt = new Font("SegoeUI", 10, FontStyle.Bold);
             //classNode.NodeFont = newFnt;
-            
+
             foreach (Type refType in refInfo.Classes) {
                 //refType.CustomAttributes.AsQueryable
 
@@ -89,13 +118,15 @@ namespace TaskManagerWinForms {
 
         private void button1_Click(object sender, EventArgs e) {
             try {
-                if (vTaskManager.LogonUser()) {
-                    menuStrip1.Enabled = true;
-                    menuStrip1.Visible = true;
-                    tablessTabControl1.SelectedTab = tabPageUserActions;
-                }
+                vTaskManager.LogonUser();
+                menuStrip1.Enabled = true;
+                menuStrip1.Visible = true;
+                tablessTabControl1.SelectedTab = tabPageUserActions;
             } catch (Exception exc) {
-                lblErrorMessage.Text = "Authorization failed: "+exc.Message;
+                lblErrorMessage.Text = "Authorization failed: " + exc.Message;
+            }
+            if (vTaskManager.UserSessions.Count < 2) {
+                vTaskManager.LogonUser(10);
             }
         }
 
@@ -111,6 +142,48 @@ namespace TaskManagerWinForms {
                 }
 
             }
+        }
+
+        private async void logOffToolStripMenuItem_Click(object sender, EventArgs e) {
+            menuStrip1.Enabled = false;
+            menuStrip1.Visible = false;
+            labelWaiting.Text = "Waiting for logoff...";
+            tablessTabControl1.SelectedTab = tabPageWaiting;
+            Task taskLogoff = Task.Run(() => vTaskManager.LogoffUser());
+            await taskLogoff;
+            tablessTabControl1.SelectedTab = tabPageAuthorization;
+            //vTaskManager.UserSessions
+        }
+
+        private void process1_Exited(object sender, EventArgs e) {
+
+        }
+
+        private void tabPageWaiting_Enter(object sender, EventArgs e) {
+            dataGridViewWaiting.Rows.Clear();
+            timerWaiting.Enabled = true;
+        }
+
+        private void timerWaiting_Tick(object sender, EventArgs e) {
+            dataGridViewWaiting.Rows.Clear();
+            foreach (UserSession session in vTaskManager.UserSessions) {
+                TaskStatus sessionState = session.ActionHandler.Status;//
+                UserSessionTypes sessionType = session.SessionType;
+                string sessionUserName = session.SessionUser.UserName;//
+                UserTypes sessionUserType = session.SessionUser.UserType;
+                DateTime sessionStartTime = session.SessionStartDateTime;
+                dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserName, sessionUserType, sessionState);
+            }
+        }
+
+        private void tabPageWaiting_Leave(object sender, EventArgs e) {
+            dataGridViewWaiting.Rows.Clear();
+            timerWaiting.Enabled = false;
+        }
+
+        private void sessionMonitorToolStripMenuItem_Click(object sender, EventArgs e) {
+            labelWaiting.Text = "User sessions";
+            tablessTabControl1.SelectedTab = tabPageWaiting;
         }
 
     }

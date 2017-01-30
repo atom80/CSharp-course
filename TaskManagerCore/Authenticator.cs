@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace TaskManagerCore {
     public abstract class Authenticator : IAuthenticator {
-        public virtual UserSession AuthenticateUser(IStorage storage) {
+        private IStorage vStorage;
+        public IStorage Storage { get { return vStorage; } }
+        public virtual UserSession AuthenticateUser() {
             throw new NotImplementedException();
         }
         public virtual bool AuthenticateUser(User user) {
@@ -14,9 +16,14 @@ namespace TaskManagerCore {
         }
 
         public virtual bool AuthenticateUser(string userName, string userPassword) {
-            if ((userName == "Administrator") && (userPassword == "Administrator")) { return true; } else {
+            //if ((userName == "Administrator") && (userPassword == "Administrator")) { return true; } else {
+            if (userName == userPassword) { return true; } else {
                 throw new NotImplementedException();
             }
+        }
+
+        public Authenticator(IStorage storage) {
+            vStorage = storage;
         }
     }
 }

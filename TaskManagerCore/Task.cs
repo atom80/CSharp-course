@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagerCore {
     [UserAction("Tasks")]
-    public abstract class Task {
+    public abstract class BaseTask {
         [UserAction("Assign task")]
         public void Assign() { }
 

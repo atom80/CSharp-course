@@ -8,7 +8,9 @@ using TaskManagerCore;
 
 namespace TaskManagerConsole {
     public class AuthConsole : Authenticator {
-        public override UserSession AuthenticateUser(IStorage storage) {
+        public AuthConsole(IStorage storage) : base(storage) { }
+
+        public override UserSession AuthenticateUser() {
             UserSession session = null;
             Console.Write("Login: ");
             string userName = Console.ReadLine();
@@ -23,7 +25,7 @@ namespace TaskManagerConsole {
                 }
             } while (cki.Key != ConsoleKey.Enter);
 
-            User user = User.UserFactory(userName, storage);
+            User user = User.Factory(userName, this.Storage);
             if (AuthenticateUser(userName, userPassword)) {
                 session = new UserSession(this, UserSessionTypes.InteractiveConsole, user);
             }

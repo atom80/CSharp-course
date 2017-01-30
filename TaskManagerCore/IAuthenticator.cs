@@ -8,6 +8,6 @@ namespace TaskManagerCore {
     public interface IAuthenticator {
         bool AuthenticateUser(string userName, string userPassword);
         bool AuthenticateUser(User user);
-        UserSession AuthenticateUser(IStorage storage);
+        UserSession AuthenticateUser();
     }
 }

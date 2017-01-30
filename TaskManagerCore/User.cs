@@ -52,9 +52,12 @@ namespace TaskManagerCore {
             vUserState = userState;
         }
 
-        public static User UserFactory(string userName, IStorage storage) {
-            User user = storage.GetUser(userName);
-            switch (user.UserType) {
+        public static User Factory(string userName, IStorage storage) {
+            //User user = storage.GetUser(userName);
+            //switch (user.UserType) {
+            User user = null;
+            UserTypes userType = UserTypes.Developer;
+            switch (userType){
                 case UserTypes.Administrator: { user = new Admin(userName); }
                 break;
                 case UserTypes.Developer: { user = new Developer(userName); }
