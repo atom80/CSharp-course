@@ -33,9 +33,11 @@ namespace TaskManagerCore {
         public UserStates UserState { get { return vUserState; } }
 
         [UserAction("Create user account", new UserTypes[] { UserTypes.Administrator })]
+        //[ActionGuid("4F34259A-9CE2-42D2-A4F5-B086AF9A93F2")]
         public void Create() { }
 
         [UserAction("Delete user account", new UserTypes[] { UserTypes.Administrator })]
+        //[ActionGuid("59197389-95D0-4B46-B77C-93635C153C06")]
         public void Delete() { }
 
         [UserAction("Lock user account", new UserTypes[] { UserTypes.Administrator })]

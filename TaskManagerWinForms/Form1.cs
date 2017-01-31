@@ -157,8 +157,19 @@ namespace TaskManagerWinForms {
             labelUserActions.Text = string.Format("User actions for {0}", user.UserFullName);
             ReflectionInfo ri = new ReflectionInfo();
             UserTypes userType = user.UserType;
-            //(from Type appClass in ri.Classes where appClass.)
-
+            listViewUserActions.Items.Clear();
+            ListViewGroup grp;
+            Attribute attr;
+            foreach (Type cls in ri.GetAllowedClasses(user)) {
+                 attr = cls.GetCustomAttribute(typeof(UserAction), false);
+                grp = new ListViewGroup((attr as UserAction).Description);
+                listViewUserActions.Groups.Add(grp);
+                int i = 0;
+                foreach (MethodInfo meth in ri.GetAllowedMethodForClass(cls,user)) {
+                    attr = meth.GetCustomAttribute(typeof(UserAction), false);
+                    listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,i++, grp));
+                }
+            }
         }
 
         private void userActionsToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -230,6 +241,5 @@ namespace TaskManagerWinForms {
             //    comboBoxUserName.Items.Add(string.Format("{0} ({1})",user.UserName,user.UserType));
             //}
         }
-
     }
 }

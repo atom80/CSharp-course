@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblUsersLoggedOn = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -41,6 +42,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.process1 = new System.Diagnostics.Process();
             this.timerWaiting = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tablessTabControl1 = new TaskManagerWinForms.TablessTabControl();
             this.tabPageAuthorization = new System.Windows.Forms.TabPage();
             this.lblErrorMessage = new System.Windows.Forms.Label();
@@ -230,6 +232,19 @@
             this.timerWaiting.Interval = 500;
             this.timerWaiting.Tick += new System.EventHandler(this.timerWaiting_Tick);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "wrench.png");
+            this.imageList1.Images.SetKeyName(1, "settings.png");
+            this.imageList1.Images.SetKeyName(2, "boy.png");
+            this.imageList1.Images.SetKeyName(3, "girl.png");
+            this.imageList1.Images.SetKeyName(4, "girl-1.png");
+            this.imageList1.Images.SetKeyName(5, "girl-2.png");
+            this.imageList1.Images.SetKeyName(6, "girl-3.png");
+            this.imageList1.Images.SetKeyName(7, "man.png");
+            // 
             // tablessTabControl1
             // 
             this.tablessTabControl1.Controls.Add(this.tabPageAuthorization);
@@ -289,7 +304,6 @@
             this.textBoxPassword.PasswordChar = '*';
             this.textBoxPassword.Size = new System.Drawing.Size(302, 20);
             this.textBoxPassword.TabIndex = 2;
-            this.textBoxPassword.Text = "Administrator";
             // 
             // lblPassword
             // 
@@ -318,7 +332,6 @@
             this.comboBoxUserName.Name = "comboBoxUserName";
             this.comboBoxUserName.Size = new System.Drawing.Size(302, 21);
             this.comboBoxUserName.TabIndex = 1;
-            this.comboBoxUserName.Text = "Administrator";
             this.comboBoxUserName.SelectedIndexChanged += new System.EventHandler(this.comboBoxUserName_SelectedIndexChanged);
             // 
             // panelAuth
@@ -389,8 +402,12 @@
             // 
             // listViewUserActions
             // 
+            this.listViewUserActions.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewUserActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewUserActions.LargeImageList = this.imageList1;
             this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
+            this.listViewUserActions.MultiSelect = false;
             this.listViewUserActions.Name = "listViewUserActions";
             this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
             this.listViewUserActions.TabIndex = 0;
@@ -655,6 +672,7 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.ListView listViewUserActions;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.ImageList imageList1;
 
 
 
