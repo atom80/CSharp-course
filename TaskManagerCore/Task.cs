@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
     [UserAction("Tasks")]
-    public abstract class Task {
+    public abstract class BaseTask {
         [UserAction("Assign task")]
         public void Assign() { }
 

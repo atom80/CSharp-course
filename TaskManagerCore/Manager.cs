@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
+namespace TaskManagerCore {
     class Manager:User {
+        public Manager(string userName)
+            : base(userName, UserTypes.Manager, UserStates.Unlocked) {
+
+        }
     }
 }

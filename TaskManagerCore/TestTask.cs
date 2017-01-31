@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManagerConsole {
-    class TestTask:Task {
+namespace TaskManagerCore {
+    class TestTask:BaseTask {
     }
 }
