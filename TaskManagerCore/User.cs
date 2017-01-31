@@ -22,6 +22,9 @@ namespace TaskManagerCore {
         private string vUserName = "";
         public string UserName { get { return vUserName; } }
 
+        private string vUserAcronym = "";
+        public string UserAcronym { get { return vUserAcronym; } }
+
         private UserTypes vUserType = UserTypes.Unknown;
         public UserTypes UserType { get { return vUserType; } }
 
@@ -52,11 +55,12 @@ namespace TaskManagerCore {
             vUserState = userState;
         }
 
-        public static User Factory(string userName, IStorage storage) {
-            //User user = storage.GetUser(userName);
+        public static User Factory(string userName, UserTypes userType) {
+            //User user = storage.GetUserByName(userName);
             //switch (user.UserType) {
+            //User user = null;
+            //UserTypes userType = UserTypes.Developer;
             User user = null;
-            UserTypes userType = UserTypes.Developer;
             switch (userType){
                 case UserTypes.Administrator: { user = new Admin(userName); }
                 break;

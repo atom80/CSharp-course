@@ -18,10 +18,10 @@ namespace TaskManagerWinForms {
             string[] userCreds = vForm.GetCredentials();
             string userName = userCreds[0];
             string userPassword = userCreds[1];
-            User user = User.Factory(userName, this.Storage);
-            if (AuthenticateUser(userName, userPassword)) {
-                session = new UserSession(this, UserSessionTypes.InteractiveGUI, user);
-            }
+
+            User user = AuthenticateUserByPassword(userName, userPassword);
+            session = new UserSession(this, UserSessionTypes.InteractiveGUI, user);
+
             return session;
         }
     }

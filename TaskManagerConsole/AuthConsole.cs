@@ -25,11 +25,8 @@ namespace TaskManagerConsole {
                 }
             } while (cki.Key != ConsoleKey.Enter);
 
-            User user = User.Factory(userName, this.Storage);
-            if (AuthenticateUser(userName, userPassword)) {
-                session = new UserSession(this, UserSessionTypes.InteractiveConsole, user);
-            }
-
+            User user = AuthenticateUserByPassword(userName, userPassword);
+            session = new UserSession(this, UserSessionTypes.InteractiveConsole, user);
             return session;
         }
 

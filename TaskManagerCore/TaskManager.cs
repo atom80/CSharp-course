@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Collections.Concurrent;
-using System.Collections.Generic; 
 
 namespace TaskManagerCore {
 
@@ -28,7 +27,7 @@ namespace TaskManagerCore {
         public event SessionChangedHandler SessionChangedEvent;
 
         public void SessionChangedHandler(UserSession session, SessionChangeType change) {
-            if ((session.SessionType!=UserSessionTypes.Automatic) && (change != SessionChangeType.Started)) {
+            if ((session.SessionType != UserSessionTypes.Automatic) && (change != SessionChangeType.Started)) {
                 vMainUserSession = null;
                 change = SessionChangeType.MainSessionStopped;
             }
@@ -37,7 +36,7 @@ namespace TaskManagerCore {
                     vUserSessions.Remove(session);
                 }
             }
-            if ((SessionChangedEvent != null)&&(!vIsInShutdown)) {
+            if ((SessionChangedEvent != null) && (!vIsInShutdown)) {
                 SessionChangedEvent(session, change);
             }
         }
@@ -52,17 +51,19 @@ namespace TaskManagerCore {
         }
 
         public void LogonUser(int userCount) {
-            UserSession bgUser = null;
+            UserSession bgUserSession = null;
+            User bgUser=null;
             string bgUserName;
 
             for (int i = 0; i < userCount; i++) {
                 bgUserName = string.Format("BackgroundUser{0}", i);
-                bgUser = new UserSession(null, UserSessionTypes.Automatic, TaskManagerCore.User.Factory(bgUserName, vStorage));
+                bgUser=vAuthenticator.AuthenticateUserByPassword(bgUserName,bgUserName); // cheat
+                bgUserSession = new UserSession(null, UserSessionTypes.Automatic, bgUser);
                 lock (this) {
-                    vUserSessions.Add(bgUser);
+                    vUserSessions.Add(bgUserSession);
                 }
-                bgUser.SessionChangedEvent += SessionChangedHandler;
-                bgUser.Start();
+                bgUserSession.SessionChangedEvent += SessionChangedHandler;
+                bgUserSession.Start();
             }
         }
 
