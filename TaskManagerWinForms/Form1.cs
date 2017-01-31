@@ -154,6 +154,7 @@ namespace TaskManagerWinForms {
         }
 
         private void InitializeUserActions(User user) {
+            Random rnd = new Random(Guid.NewGuid().GetHashCode());
             labelUserActions.Text = string.Format("User actions for {0}", user.UserFullName);
             ReflectionInfo ri = new ReflectionInfo();
             UserTypes userType = user.UserType;
@@ -164,10 +165,11 @@ namespace TaskManagerWinForms {
                  attr = cls.GetCustomAttribute(typeof(UserAction), false);
                 grp = new ListViewGroup((attr as UserAction).Description);
                 listViewUserActions.Groups.Add(grp);
-                int i = 0;
+                int imgIndex = 0;
                 foreach (MethodInfo meth in ri.GetAllowedMethodForClass(cls,user)) {
                     attr = meth.GetCustomAttribute(typeof(UserAction), false);
-                    listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,i++, grp));
+                    imgIndex = rnd.Next(0, listViewUserActions.LargeImageList.Images.Count + 1);
+                    listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,imgIndex, grp));
                 }
             }
         }
