@@ -45,7 +45,7 @@ namespace TaskManagerConsole {
                 }
             } while (!isLogged);
 
-            vTaskManager.LogonUser(5);
+            vTaskManager.LogonBackgroundUsers(5);
 
             Thread.Sleep(5000);
             vTaskManager.Shutdown();

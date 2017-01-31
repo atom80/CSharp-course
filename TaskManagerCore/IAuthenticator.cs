@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace TaskManagerCore {
     public interface IAuthenticator {
-        bool AuthenticateUser(string userName, string userPassword);
-        bool AuthenticateUser(User user);
+        User AuthenticateUserByPassword(string userName, string userPassword);
+        //bool AuthenticateUser(User user);
         UserSession AuthenticateUser();
     }
 }

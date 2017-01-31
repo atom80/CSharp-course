@@ -5,15 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManagerCore {
-    [UserAction("Tasks")]
+    [UserAction("Tasks", new UserTypes[] { UserTypes.Administrator,UserTypes.Manager,UserTypes.Developer})]
     public abstract class BaseTask {
-        [UserAction("Assign task")]
+        [UserAction("Assign task", new UserTypes[] { UserTypes.Manager})]
         public void Assign() { }
 
-        [UserAction("Close task")]
+        [UserAction("Close task", new UserTypes[] { UserTypes.Manager, UserTypes.Developer })]
         public void Close() { }
 
-        [UserAction("Reject task")]
+        [UserAction("Reject task", new UserTypes[] { UserTypes.Manager })]
         public void Reject() { }
     }
 }
