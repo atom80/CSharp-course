@@ -11,8 +11,7 @@ namespace TaskManagerCore {
     public class TaskManager {
         private TMTimer vTimer;
         public TMTimer Timer { get { return vTimer; } }
-        private List<User> vUsers = new List<User>();
-        UserSession vMainUserSession;
+        private UserSession vMainUserSession;
 
         private bool vIsInShutdown = false;
 
@@ -41,27 +40,27 @@ namespace TaskManagerCore {
             }
         }
 
-        public void LogonUser() {
+        public bool LogonUser() {
             vMainUserSession = vAuthenticator.AuthenticateUser();
             vMainUserSession.SessionChangedEvent += SessionChangedHandler;
             lock (this) {
                 vUserSessions.Add(vMainUserSession);
             }
             vMainUserSession.Start();
+            return true;
         }
 
-        public void LogonUser(int userCount) {
+        public void LogonBackgroundUsers(int userCount) {
             UserSession bgUserSession = null;
-            User bgUser=null;
-            string bgUserName;
-
+            User bgUser = null;
+            //            string bgUserName;
             for (int i = 0; i < userCount; i++) {
-                bgUserName = string.Format("BackgroundUser{0}", i);
-                bgUser=vAuthenticator.AuthenticateUserByPassword(bgUserName,bgUserName); // cheat
+                //bgUserName = string.Format("BackgroundUser{0}", i);
+                //bgUser=vAuthenticator.AuthenticateUserByPassword(bgUserName,bgUserName); // cheat
+                bgUser = vStorage.Users[i];
+                if (bgUser == vMainUserSession.SessionUser) { continue; }
                 bgUserSession = new UserSession(null, UserSessionTypes.Automatic, bgUser);
-                lock (this) {
-                    vUserSessions.Add(bgUserSession);
-                }
+                lock (this) { vUserSessions.Add(bgUserSession); }
                 bgUserSession.SessionChangedEvent += SessionChangedHandler;
                 bgUserSession.Start();
             }
@@ -77,17 +76,7 @@ namespace TaskManagerCore {
                 SessionChangedEvent(vMainUserSession, SessionChangeType.MainSessionStopped);
             }
             vMainUserSession = null;
-            Thread.Sleep(5000);
-        }
-
-        public string[] Users {
-            get {
-                string[] userList = new string[vUsers.Count];
-                for (int i = 0; i < vUsers.Count; i++) {
-                    userList[i] = vUsers[i].ToString(); // RRR
-                }
-                return userList;
-            }
+            Thread.Sleep(2000);
         }
 
         public TaskManager(IStorage storage, IAuthenticator auth) {
@@ -95,6 +84,7 @@ namespace TaskManagerCore {
             vStorage = storage;
             vAuthenticator = auth;
             vUserSessions = new List<UserSession>();
+            vStorage.Load();
             //vUsers.Load();
         }
 

@@ -16,12 +16,11 @@ namespace TaskManagerCore {
         //}
 
         public User AuthenticateUserByPassword(string userName, string userPassword) { // need to seal it!
-            //if ((userName == "Administrator") && (userPassword == "Administrator")) { return true; } else {
             if (userName == userPassword) {
                 User user = vStorage.GetUserByName(userName);
                 return user;
             } else {
-                throw new NotImplementedException();
+                throw new Exception("Incorrect User name or Password");
             }
         }
 
