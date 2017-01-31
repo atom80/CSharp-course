@@ -13,8 +13,9 @@ namespace TaskManagerConsole {
             Console.WriteLine("{0}", e.TickCount);
         }
 
-        public static void SessionChangeHandler(UserSession userSession, SessionChangeType change) {
-            switch (change) {
+        public static void SessionChangeHandler(UserSession userSession, SessionChangeArgs e) {
+            SessionChangeType changeType = e.ChangeType;
+            switch (changeType) {
                 case SessionChangeType.Started: {
                     Console.WriteLine("\n[{0}] Session for user {1}({2}) has started", userSession.SessionStartDateTime,userSession.SessionUser.UserName, userSession.SessionUser.UserType);
                 }

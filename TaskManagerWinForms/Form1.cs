@@ -36,8 +36,9 @@ namespace TaskManagerWinForms {
             tablessTabControl1.SelectedTab = tabPageAuthorization;
         }
 
-        public void SessionChangedHandler(UserSession session, SessionChangeType change) {
-            switch (change) {
+        public void SessionChangedHandler(UserSession session, SessionChangeArgs e) {
+            SessionChangeType changeType = e.ChangeType;
+            switch (changeType) {
                 case SessionChangeType.Started:
                 case SessionChangeType.Stopped:
                 case SessionChangeType.MainSessionStopped: {
@@ -45,7 +46,7 @@ namespace TaskManagerWinForms {
                         int sessionCount = (from UserSession us in vTaskManager.UserSessions where (us.ActionHandler.Status == TaskStatus.Running) select us).ToList().Count;
                         lblUsersLoggedOn.Text = string.Format("Users: {0}", sessionCount);
                     }
-                    if (change == SessionChangeType.MainSessionStopped) {
+                    if (changeType == SessionChangeType.MainSessionStopped) {
                         this.Invoke(new FormSetAuthPage(SetAuthPage));
                     }
                 }
@@ -81,6 +82,29 @@ namespace TaskManagerWinForms {
         }
 
         private void tabPageReflection_Enter(object sender, EventArgs e) {
+        }
+
+        private async void button1_Click(object sender, EventArgs e) {
+            bool logonOk = false;
+            try {
+                logonOk = vTaskManager.LogonUser();
+                menuStrip1.Enabled = true;
+                menuStrip1.Visible = true;
+                tablessTabControl1.SelectedTab = tabPageUserActions;
+            } catch (Exception exc) {
+                lblErrorMessage.Text = "Authorization failed: " + exc.Message;
+            }
+            if (logonOk) {
+                InitializeClassMap();
+                InitializeUserActions(vTaskManager.MainUserSession.SessionUser);
+                if (vTaskManager.UserSessions.Count < 2) {
+                    Task taskBgUsers = Task.Run(() => vTaskManager.LogonBackgroundUsers(10));
+                    await taskBgUsers;
+                }
+            }
+        }
+
+        private void InitializeClassMap() { /// most of this code should be moved to ReflectionInfo
             ReflectionInfo refInfo = new ReflectionInfo();
             treeView1.Nodes.Clear();
             TreeNode classNode = treeView1.Nodes.Add("Classes");
@@ -127,23 +151,14 @@ namespace TaskManagerWinForms {
             //foreach (Type refType in (from rt in refInfo.Types where rt. select rt)) {
             //    TreeNode newNode = attrNode.Nodes.Add(refType.Name);
             //}
-
         }
 
-        private async void button1_Click(object sender, EventArgs e) {
-            bool logonOk =false;
-            try {
-                logonOk = vTaskManager.LogonUser();
-                menuStrip1.Enabled = true;
-                menuStrip1.Visible = true;
-                tablessTabControl1.SelectedTab = tabPageUserActions;
-            } catch (Exception exc) {
-                lblErrorMessage.Text = "Authorization failed: " + exc.Message;
-            }
-            if ((logonOk)&&(vTaskManager.UserSessions.Count < 2)) {
-                Task taskBgUsers = Task.Run(()=>vTaskManager.LogonBackgroundUsers(10));
-                await taskBgUsers;
-            }
+        private void InitializeUserActions(User user) {
+            labelUserActions.Text = string.Format("User actions for {0}", user.UserFullName);
+            ReflectionInfo ri = new ReflectionInfo();
+            UserTypes userType = user.UserType;
+            //(from Type appClass in ri.Classes where appClass.)
+
         }
 
         private void userActionsToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -153,9 +168,7 @@ namespace TaskManagerWinForms {
 
         private void comboBoxUserName_SelectedIndexChanged(object sender, EventArgs e) {
             if (sender is ComboBox) {
-                if ((sender as ComboBox).Text == "Administrator") {
-                    textBoxPassword.Text = "Administrator";
-                }
+                textBoxPassword.Text = (sender as ComboBox).SelectedValue.ToString();
             }
         }
 
@@ -179,17 +192,23 @@ namespace TaskManagerWinForms {
             timerWaiting.Enabled = true;
         }
 
-        private void timerWaiting_Tick(object sender, EventArgs e) {
+        private void UpdateUserSessionPage() {
             dataGridViewWaiting.Rows.Clear();
-            foreach (UserSession session in vTaskManager.UserSessions) {
-                TaskStatus sessionState = session.ActionHandler.Status;
-                UserSessionTypes sessionType = session.SessionType;
-                string sessionUserAcronym = session.SessionUser.UserAcronym;
-                string sessionUserName = session.SessionUser.UserName;
-                UserTypes sessionUserType = session.SessionUser.UserType;
-                DateTime sessionStartTime = session.SessionStartDateTime;
-                dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserAcronym, sessionUserName, sessionUserType, sessionState);
+            lock (vTaskManager) {
+                foreach (UserSession session in vTaskManager.UserSessions) {
+                    TaskStatus sessionState = session.ActionHandler.Status;
+                    UserSessionTypes sessionType = session.SessionType;
+                    string sessionUserAcronym = session.SessionUser.UserAcronym;
+                    string sessionUserName = session.SessionUser.UserName;
+                    UserTypes sessionUserType = session.SessionUser.UserType;
+                    DateTime sessionStartTime = session.SessionStartDateTime;
+                    dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserAcronym, sessionUserName, sessionUserType, sessionState);
+                }
             }
+        }
+
+        private void timerWaiting_Tick(object sender, EventArgs e) {
+            UpdateUserSessionPage();
         }
 
         private void tabPageWaiting_Leave(object sender, EventArgs e) {

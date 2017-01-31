@@ -18,8 +18,13 @@ namespace TaskManagerCore {
         MainSessionStopped = 2
     }
 
-    public delegate void SessionChangedHandler(UserSession session, SessionChangeType change);
-    public class UserSession {
+    public class SessionChangeArgs : EventArgs {
+        public SessionChangeType ChangeType { get; set; }
+    }
+
+    public delegate void SessionChangedHandler(UserSession session, SessionChangeArgs e);
+    public class UserSession : IDisposable {
+        private bool vIsDisposed = false;
 
         public event SessionChangedHandler SessionChangedEvent;
 
@@ -27,7 +32,7 @@ namespace TaskManagerCore {
         public Guid SessionId { get { return vSessionId; } }
         private Task vActionHandler;
         public Task ActionHandler { get { return vActionHandler; } }
-        public CancellationTokenSource CancellationTokenSource = new CancellationTokenSource();
+        public CancellationTokenSource SessionCancellationTokenSource = new CancellationTokenSource();
         private readonly UserSessionTypes vSessionType;
         public UserSessionTypes SessionType { get { return vSessionType; } }
 
@@ -45,10 +50,10 @@ namespace TaskManagerCore {
         public void DoHandleActions(object sender) {
             UserSession userSession = sender as UserSession;
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(userSession, SessionChangeType.Started);
+                SessionChangedEvent(userSession, new SessionChangeArgs { ChangeType = SessionChangeType.Started });
             }
             int counter = 0;
-            while (!userSession.CancellationTokenSource.IsCancellationRequested) {
+            while (!userSession.SessionCancellationTokenSource.IsCancellationRequested) {
                 Console.Write("{0}", Task.CurrentId);
                 Thread.Sleep(2000); // do some heavy work
                 if (userSession.SessionType == UserSessionTypes.Automatic) {
@@ -58,7 +63,7 @@ namespace TaskManagerCore {
             Thread.Sleep(2000);
             userSession.SessionStopDateTime = DateTime.Now;
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(userSession, SessionChangeType.Stopped);
+                SessionChangedEvent(userSession, new SessionChangeArgs { ChangeType = SessionChangeType.Stopped });
             }
         }
 
@@ -73,7 +78,7 @@ namespace TaskManagerCore {
             vSessionUser = sessionUser;
             //vSessionAuthenticator.AuthenticateUser(sessionUser);
 
-            vActionHandler = new Task(DoHandleActions, (object)this, CancellationTokenSource.Token, TaskCreationOptions.AttachedToParent | TaskCreationOptions.PreferFairness);
+            vActionHandler = new Task(DoHandleActions, (object)this, SessionCancellationTokenSource.Token, TaskCreationOptions.AttachedToParent | TaskCreationOptions.PreferFairness);
 
             //vActionHandler=Task.Factory.StartNew(()=>DoHandleActions(this),vCancellationTokenSource.Token);
             //vActionHandler.Start();
@@ -83,5 +88,54 @@ namespace TaskManagerCore {
             //Console.WriteLine("UserSession done!");
         }
 
+        /// <summary>
+        /// https://msdn.microsoft.com/ru-ru/library/system.idisposable(v=vs.110).aspx
+        /// </summary>
+        public void Dispose() {
+            Dispose(true);
+            // This object will be cleaned up by the Dispose method.
+            // Therefore, you should call GC.SupressFinalize to
+            // take this object off the finalization queue
+            // and prevent finalization code for this object
+            // from executing a second time.
+            GC.SuppressFinalize(this);
+        }
+
+        // Dispose(bool disposing) executes in two distinct scenarios.
+        // If disposing equals true, the method has been called directly
+        // or indirectly by a user's code. Managed and unmanaged resources
+        // can be disposed.
+        // If disposing equals false, the method has been called by the
+        // runtime from inside the finalizer and you should not reference
+        // other objects. Only unmanaged resources can be disposed.
+        /// <summary>
+        /// https://msdn.microsoft.com/ru-ru/library/system.idisposable(v=vs.110).aspx
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing) {
+            // Check to see if Dispose has already been called.
+            if (!this.vIsDisposed) {
+                // If disposing equals true, dispose all managed
+                // and unmanaged resources.
+                if (disposing) {
+                    // Dispose managed resources.
+                    vActionHandler.Dispose();
+                    SessionCancellationTokenSource.Dispose();
+
+                }
+
+                // Call the appropriate methods to clean up
+                // unmanaged resources here.
+                // If disposing is false,
+                // only the following code is executed.
+                //CloseHandle(handle);
+                //handle = IntPtr.Zero;
+
+                // Note disposing has been done.
+                vIsDisposed = true;
+
+            }
+        }
     }
 }
+

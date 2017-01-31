@@ -53,8 +53,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnLogon = new System.Windows.Forms.Button();
             this.tabPageUserActions = new System.Windows.Forms.TabPage();
+            this.tabControlUserActions = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.listViewUserActions = new System.Windows.Forms.ListView();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panelUserActions = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelUserActions = new System.Windows.Forms.Label();
             this.tabPageReflection = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelCaptionClassMap = new System.Windows.Forms.Panel();
@@ -70,10 +74,6 @@
             this.SessionState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.labelWaiting = new System.Windows.Forms.Label();
-            this.tabControlUserActions = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.listViewUserActions = new System.Windows.Forms.ListView();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -81,14 +81,14 @@
             this.tabPageAuthorization.SuspendLayout();
             this.panelAuth.SuspendLayout();
             this.tabPageUserActions.SuspendLayout();
+            this.tabControlUserActions.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.panelUserActions.SuspendLayout();
             this.tabPageReflection.SuspendLayout();
             this.panelCaptionClassMap.SuspendLayout();
             this.tabPageWaiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).BeginInit();
             this.panel3.SuspendLayout();
-            this.tabControlUserActions.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -278,9 +278,9 @@
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label4.Location = new System.Drawing.Point(472, 104);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 13);
+            this.label4.Size = new System.Drawing.Size(144, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Administrator/Administrator";
+            this.label4.Text = "*User password = User name";
             // 
             // textBoxPassword
             // 
@@ -365,27 +365,68 @@
             this.tabPageUserActions.TabIndex = 0;
             this.tabPageUserActions.Text = "tabPageUserActions";
             // 
+            // tabControlUserActions
+            // 
+            this.tabControlUserActions.Controls.Add(this.tabPage1);
+            this.tabControlUserActions.Controls.Add(this.tabPage2);
+            this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
+            this.tabControlUserActions.Name = "tabControlUserActions";
+            this.tabControlUserActions.SelectedIndex = 0;
+            this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
+            this.tabControlUserActions.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.listViewUserActions);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(974, 428);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // listViewUserActions
+            // 
+            this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
+            this.listViewUserActions.Name = "listViewUserActions";
+            this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
+            this.listViewUserActions.TabIndex = 0;
+            this.listViewUserActions.UseCompatibleStateImageBehavior = false;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(974, 428);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // panelUserActions
             // 
             this.panelUserActions.BackColor = System.Drawing.SystemColors.ControlDark;
             this.panelUserActions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelUserActions.Controls.Add(this.label3);
+            this.panelUserActions.Controls.Add(this.labelUserActions);
             this.panelUserActions.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelUserActions.Location = new System.Drawing.Point(3, 3);
             this.panelUserActions.Name = "panelUserActions";
             this.panelUserActions.Size = new System.Drawing.Size(982, 43);
             this.panelUserActions.TabIndex = 2;
             // 
-            // label3
+            // labelUserActions
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(980, 41);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "User actions";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelUserActions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelUserActions.Location = new System.Drawing.Point(0, 0);
+            this.labelUserActions.Name = "labelUserActions";
+            this.labelUserActions.Size = new System.Drawing.Size(980, 41);
+            this.labelUserActions.TabIndex = 0;
+            this.labelUserActions.Text = "User actions";
+            this.labelUserActions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPageReflection
             // 
@@ -528,47 +569,6 @@
             this.labelWaiting.Text = "Waiting for logoff...";
             this.labelWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tabControlUserActions
-            // 
-            this.tabControlUserActions.Controls.Add(this.tabPage1);
-            this.tabControlUserActions.Controls.Add(this.tabPage2);
-            this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
-            this.tabControlUserActions.Name = "tabControlUserActions";
-            this.tabControlUserActions.SelectedIndex = 0;
-            this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
-            this.tabControlUserActions.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.listViewUserActions);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 428);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 428);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // listViewUserActions
-            // 
-            this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
-            this.listViewUserActions.Name = "listViewUserActions";
-            this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
-            this.listViewUserActions.TabIndex = 0;
-            this.listViewUserActions.UseCompatibleStateImageBehavior = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -590,14 +590,14 @@
             this.tabPageAuthorization.PerformLayout();
             this.panelAuth.ResumeLayout(false);
             this.tabPageUserActions.ResumeLayout(false);
+            this.tabControlUserActions.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.panelUserActions.ResumeLayout(false);
             this.tabPageReflection.ResumeLayout(false);
             this.panelCaptionClassMap.ResumeLayout(false);
             this.tabPageWaiting.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).EndInit();
             this.panel3.ResumeLayout(false);
-            this.tabControlUserActions.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -627,7 +627,7 @@
         private System.Windows.Forms.Panel panelAuth;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panelUserActions;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelUserActions;
         private System.Windows.Forms.ToolStripMenuItem userActionsToolStripMenuItem;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.ComboBox comboBoxUserName;
