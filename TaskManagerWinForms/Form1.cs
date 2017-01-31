@@ -57,7 +57,7 @@ namespace TaskManagerWinForms {
 
         public string[] GetCredentials() {
             string[] credentials = new string[2];
-            credentials[0] = comboBoxUserName.Text;
+            credentials[0] = comboBoxUserName.SelectedValue.ToString();
             credentials[1] = textBoxPassword.Text;
             return credentials;
         }
@@ -130,17 +130,19 @@ namespace TaskManagerWinForms {
 
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private async void button1_Click(object sender, EventArgs e) {
+            bool logonOk =false;
             try {
-                vTaskManager.LogonUser();
+                logonOk = vTaskManager.LogonUser();
                 menuStrip1.Enabled = true;
                 menuStrip1.Visible = true;
                 tablessTabControl1.SelectedTab = tabPageUserActions;
             } catch (Exception exc) {
                 lblErrorMessage.Text = "Authorization failed: " + exc.Message;
             }
-            if (vTaskManager.UserSessions.Count < 2) {
-                vTaskManager.LogonUser(10);
+            if ((logonOk)&&(vTaskManager.UserSessions.Count < 2)) {
+                Task taskBgUsers = Task.Run(()=>vTaskManager.LogonBackgroundUsers(10));
+                await taskBgUsers;
             }
         }
 
@@ -180,12 +182,13 @@ namespace TaskManagerWinForms {
         private void timerWaiting_Tick(object sender, EventArgs e) {
             dataGridViewWaiting.Rows.Clear();
             foreach (UserSession session in vTaskManager.UserSessions) {
-                TaskStatus sessionState = session.ActionHandler.Status;//
+                TaskStatus sessionState = session.ActionHandler.Status;
                 UserSessionTypes sessionType = session.SessionType;
-                string sessionUserName = session.SessionUser.UserName;//
+                string sessionUserAcronym = session.SessionUser.UserAcronym;
+                string sessionUserName = session.SessionUser.UserName;
                 UserTypes sessionUserType = session.SessionUser.UserType;
                 DateTime sessionStartTime = session.SessionStartDateTime;
-                dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserName, sessionUserType, sessionState);
+                dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserAcronym, sessionUserName, sessionUserType, sessionState);
             }
         }
 
@@ -197,6 +200,16 @@ namespace TaskManagerWinForms {
         private void sessionMonitorToolStripMenuItem_Click(object sender, EventArgs e) {
             labelWaiting.Text = "User sessions";
             tablessTabControl1.SelectedTab = tabPageWaiting;
+        }
+
+        private void tabPageAuthorization_Enter(object sender, EventArgs e) {
+            lblErrorMessage.Text = "";
+            comboBoxUserName.DataSource = vTaskManager.Storage.Users;
+            comboBoxUserName.DisplayMember = "UserFullName";
+            comboBoxUserName.ValueMember = "UserName";
+            //foreach(User user in vTaskManager.Storage.Users){
+            //    comboBoxUserName.Items.Add(string.Format("{0} ({1})",user.UserName,user.UserType));
+            //}
         }
 
     }

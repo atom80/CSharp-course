@@ -36,11 +36,11 @@
             this.functionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reflectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sessionMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.process1 = new System.Diagnostics.Process();
             this.timerWaiting = new System.Windows.Forms.Timer(this.components);
-            this.sessionMonitorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tablessTabControl1 = new TaskManagerWinForms.TablessTabControl();
             this.tabPageAuthorization = new System.Windows.Forms.TabPage();
             this.lblErrorMessage = new System.Windows.Forms.Label();
@@ -64,11 +64,16 @@
             this.SessionId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SessionStartedAt = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SessionType = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UserAcronym = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UserName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.UserType = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SessionState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.labelWaiting = new System.Windows.Forms.Label();
+            this.tabControlUserActions = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listViewUserActions = new System.Windows.Forms.ListView();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -82,6 +87,8 @@
             this.tabPageWaiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).BeginInit();
             this.panel3.SuspendLayout();
+            this.tabControlUserActions.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -179,6 +186,13 @@
             this.userActionsToolStripMenuItem.Text = "User actions";
             this.userActionsToolStripMenuItem.Click += new System.EventHandler(this.userActionsToolStripMenuItem_Click);
             // 
+            // sessionMonitorToolStripMenuItem
+            // 
+            this.sessionMonitorToolStripMenuItem.Name = "sessionMonitorToolStripMenuItem";
+            this.sessionMonitorToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.sessionMonitorToolStripMenuItem.Text = "Session monitor";
+            this.sessionMonitorToolStripMenuItem.Click += new System.EventHandler(this.sessionMonitorToolStripMenuItem_Click);
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -216,13 +230,6 @@
             this.timerWaiting.Interval = 500;
             this.timerWaiting.Tick += new System.EventHandler(this.timerWaiting_Tick);
             // 
-            // sessionMonitorToolStripMenuItem
-            // 
-            this.sessionMonitorToolStripMenuItem.Name = "sessionMonitorToolStripMenuItem";
-            this.sessionMonitorToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.sessionMonitorToolStripMenuItem.Text = "Session monitor";
-            this.sessionMonitorToolStripMenuItem.Click += new System.EventHandler(this.sessionMonitorToolStripMenuItem_Click);
-            // 
             // tablessTabControl1
             // 
             this.tablessTabControl1.Controls.Add(this.tabPageAuthorization);
@@ -253,6 +260,7 @@
             this.tabPageAuthorization.TabIndex = 2;
             this.tabPageAuthorization.Text = "tabPageAuthorization";
             this.tabPageAuthorization.UseVisualStyleBackColor = true;
+            this.tabPageAuthorization.Enter += new System.EventHandler(this.tabPageAuthorization_Enter);
             // 
             // lblErrorMessage
             // 
@@ -306,10 +314,6 @@
             this.comboBoxUserName.AutoCompleteCustomSource.AddRange(new string[] {
             "Administrator"});
             this.comboBoxUserName.FormattingEnabled = true;
-            this.comboBoxUserName.Items.AddRange(new object[] {
-            "Administrator",
-            "Manager",
-            "User"});
             this.comboBoxUserName.Location = new System.Drawing.Point(131, 100);
             this.comboBoxUserName.Name = "comboBoxUserName";
             this.comboBoxUserName.Size = new System.Drawing.Size(302, 21);
@@ -352,6 +356,7 @@
             // tabPageUserActions
             // 
             this.tabPageUserActions.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPageUserActions.Controls.Add(this.tabControlUserActions);
             this.tabPageUserActions.Controls.Add(this.panelUserActions);
             this.tabPageUserActions.Location = new System.Drawing.Point(4, 22);
             this.tabPageUserActions.Name = "tabPageUserActions";
@@ -448,6 +453,7 @@
             this.SessionId,
             this.SessionStartedAt,
             this.SessionType,
+            this.UserAcronym,
             this.UserName,
             this.UserType,
             this.SessionState});
@@ -475,6 +481,12 @@
             this.SessionType.HeaderText = "Session type";
             this.SessionType.Name = "SessionType";
             this.SessionType.ReadOnly = true;
+            // 
+            // UserAcronym
+            // 
+            this.UserAcronym.HeaderText = "User";
+            this.UserAcronym.Name = "UserAcronym";
+            this.UserAcronym.ReadOnly = true;
             // 
             // UserName
             // 
@@ -516,6 +528,47 @@
             this.labelWaiting.Text = "Waiting for logoff...";
             this.labelWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // tabControlUserActions
+            // 
+            this.tabControlUserActions.Controls.Add(this.tabPage1);
+            this.tabControlUserActions.Controls.Add(this.tabPage2);
+            this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
+            this.tabControlUserActions.Name = "tabControlUserActions";
+            this.tabControlUserActions.SelectedIndex = 0;
+            this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
+            this.tabControlUserActions.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.listViewUserActions);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(974, 428);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(974, 428);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // listViewUserActions
+            // 
+            this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
+            this.listViewUserActions.Name = "listViewUserActions";
+            this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
+            this.listViewUserActions.TabIndex = 0;
+            this.listViewUserActions.UseCompatibleStateImageBehavior = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -543,6 +596,8 @@
             this.tabPageWaiting.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).EndInit();
             this.panel3.ResumeLayout(false);
+            this.tabControlUserActions.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -592,9 +647,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionId;
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionStartedAt;
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionType;
+        private System.Windows.Forms.DataGridViewTextBoxColumn UserAcronym;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserName;
         private System.Windows.Forms.DataGridViewTextBoxColumn UserType;
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionState;
+        private System.Windows.Forms.TabControl tabControlUserActions;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ListView listViewUserActions;
+        private System.Windows.Forms.TabPage tabPage2;
 
 
 
