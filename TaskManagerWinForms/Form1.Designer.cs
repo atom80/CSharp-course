@@ -460,9 +460,11 @@
             this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
             this.listViewUserActions.MultiSelect = false;
             this.listViewUserActions.Name = "listViewUserActions";
+            this.listViewUserActions.ShowItemToolTips = true;
             this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
             this.listViewUserActions.TabIndex = 0;
             this.listViewUserActions.UseCompatibleStateImageBehavior = false;
+            this.listViewUserActions.Click += new System.EventHandler(this.listViewUserActions_Click);
             // 
             // tabPage2
             // 
@@ -648,6 +650,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Name = "Form1";
             this.Text = "Task Manager v.0.1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

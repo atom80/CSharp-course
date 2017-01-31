@@ -37,7 +37,7 @@ namespace TaskManagerCore {
                     vUserSessions.Remove(session);
                 }
             }
-            if ((SessionChangedEvent != null) && (!vIsInShutdown)) {
+            if ((SessionChangedEvent != null) /*&& (!vIsInShutdown)*/) { // RRR
                 SessionChangedEvent(session, e);
             }
         }

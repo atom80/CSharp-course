@@ -162,14 +162,19 @@ namespace TaskManagerWinForms {
             ListViewGroup grp;
             Attribute attr;
             foreach (Type cls in ri.GetAllowedClasses(user)) {
-                 attr = cls.GetCustomAttribute(typeof(UserAction), false);
+                attr = cls.GetCustomAttribute(typeof(UserAction), false);
                 grp = new ListViewGroup((attr as UserAction).Description);
                 listViewUserActions.Groups.Add(grp);
                 int imgIndex = 0;
-                foreach (MethodInfo meth in ri.GetAllowedMethodForClass(cls,user)) {
+                ListViewItem lvi = null;
+                foreach (MethodInfo meth in ri.GetAllowedMethodForClass(cls, user)) {
                     attr = meth.GetCustomAttribute(typeof(UserAction), false);
                     imgIndex = rnd.Next(0, listViewUserActions.LargeImageList.Images.Count + 1);
-                    listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,imgIndex, grp));
+                    lvi = listViewUserActions.Items.Add(Guid.NewGuid().ToString(), (attr as UserAction).Description, imgIndex);
+                    lvi.Group = grp;
+                    lvi.ToolTipText = lvi.Name;
+                    lvi.Tag = meth;
+                    //listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,imgIndex, grp));
                 }
             }
         }
@@ -242,6 +247,19 @@ namespace TaskManagerWinForms {
             //foreach(User user in vTaskManager.Storage.Users){
             //    comboBoxUserName.Items.Add(string.Format("{0} ({1})",user.UserName,user.UserType));
             //}
+        }
+
+        private void listViewUserActions_Click(object sender, EventArgs e) {
+            if (sender is ListView) {
+                ListViewItem lvi = (sender as ListView).FocusedItem;
+                if (lvi == null) { return; }
+                vTaskManager.MainUserSession.EnqueueTask(new UserTask(lvi.Tag));
+                MessageBox.Show(string.Format("{0} {1} {2}", lvi.Name, lvi.Text, lvi.Tag.ToString()));
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+
         }
     }
 }

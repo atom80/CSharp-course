@@ -32,6 +32,9 @@ namespace TaskManagerCore {
         private UserStates vUserState = UserStates.Locked;
         public UserStates UserState { get { return vUserState; } }
 
+        [UserAction("Users", new UserTypes[] { UserTypes.Administrator })]
+        public static void ListUsers() { }
+
         [UserAction("Create user account", new UserTypes[] { UserTypes.Administrator })]
         //[ActionGuid("4F34259A-9CE2-42D2-A4F5-B086AF9A93F2")]
         public void Create() { }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,14 @@ namespace TaskManagerCore {
     }
 
     public delegate void SessionChangedHandler(UserSession session, SessionChangeArgs e);
+
+    public class UserTask{
+        public UserTask(object obj) { }
+
+    }
+
     public class UserSession : IDisposable {
+        private ConcurrentQueue<UserTask> vUserTasks = new ConcurrentQueue<UserTask>();
         private bool vIsDisposed = false;
 
         public event SessionChangedHandler SessionChangedEvent;
@@ -52,10 +60,16 @@ namespace TaskManagerCore {
             if (SessionChangedEvent != null) {
                 SessionChangedEvent(userSession, new SessionChangeArgs { ChangeType = SessionChangeType.Started });
             }
+            UserTask userTask = null;
             int counter = 0;
+            
             while (!userSession.SessionCancellationTokenSource.IsCancellationRequested) {
+                if (userSession.vUserTasks.TryDequeue(out userTask)) {
+                    Console.Write("Yahhoo, new task!");
+                } else { 
                 Console.Write("{0}", Task.CurrentId);
                 Thread.Sleep(2000); // do some heavy work
+            }
                 if (userSession.SessionType == UserSessionTypes.Automatic) {
                     if (counter++ > 10) { break; }
                 }
@@ -86,6 +100,10 @@ namespace TaskManagerCore {
             //CancellationTokenSource.Cancel(false);
 
             //Console.WriteLine("UserSession done!");
+        }
+
+        public void EnqueueTask(UserTask userTask) {
+            vUserTasks.Enqueue(userTask);
         }
 
         /// <summary>
