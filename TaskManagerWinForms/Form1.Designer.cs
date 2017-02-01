@@ -56,9 +56,10 @@
             this.btnLogon = new System.Windows.Forms.Button();
             this.tabPageUserActions = new System.Windows.Forms.TabPage();
             this.tabControlUserActions = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPageActions = new System.Windows.Forms.TabPage();
             this.listViewUserActions = new System.Windows.Forms.ListView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPageDataList = new System.Windows.Forms.TabPage();
+            this.dataGridViewLists = new System.Windows.Forms.DataGridView();
             this.panelUserActions = new System.Windows.Forms.Panel();
             this.labelUserActions = new System.Windows.Forms.Label();
             this.tabPageReflection = new System.Windows.Forms.TabPage();
@@ -84,7 +85,9 @@
             this.panelAuth.SuspendLayout();
             this.tabPageUserActions.SuspendLayout();
             this.tabControlUserActions.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabPageActions.SuspendLayout();
+            this.tabPageDataList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLists)).BeginInit();
             this.panelUserActions.SuspendLayout();
             this.tabPageReflection.SuspendLayout();
             this.panelCaptionClassMap.SuspendLayout();
@@ -430,8 +433,8 @@
             // 
             // tabControlUserActions
             // 
-            this.tabControlUserActions.Controls.Add(this.tabPage1);
-            this.tabControlUserActions.Controls.Add(this.tabPage2);
+            this.tabControlUserActions.Controls.Add(this.tabPageActions);
+            this.tabControlUserActions.Controls.Add(this.tabPageDataList);
             this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
             this.tabControlUserActions.Name = "tabControlUserActions";
@@ -439,16 +442,16 @@
             this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
             this.tabControlUserActions.TabIndex = 3;
             // 
-            // tabPage1
+            // tabPageActions
             // 
-            this.tabPage1.Controls.Add(this.listViewUserActions);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 428);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageActions.Controls.Add(this.listViewUserActions);
+            this.tabPageActions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageActions.Name = "tabPageActions";
+            this.tabPageActions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageActions.Size = new System.Drawing.Size(974, 428);
+            this.tabPageActions.TabIndex = 0;
+            this.tabPageActions.Text = "Actions";
+            this.tabPageActions.UseVisualStyleBackColor = true;
             // 
             // listViewUserActions
             // 
@@ -466,15 +469,29 @@
             this.listViewUserActions.UseCompatibleStateImageBehavior = false;
             this.listViewUserActions.Click += new System.EventHandler(this.listViewUserActions_Click);
             // 
-            // tabPage2
+            // tabPageDataList
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 428);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPageDataList.Controls.Add(this.dataGridViewLists);
+            this.tabPageDataList.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDataList.Name = "tabPageDataList";
+            this.tabPageDataList.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDataList.Size = new System.Drawing.Size(974, 428);
+            this.tabPageDataList.TabIndex = 1;
+            this.tabPageDataList.Text = "Data list";
+            this.tabPageDataList.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewLists
+            // 
+            this.dataGridViewLists.AllowUserToAddRows = false;
+            this.dataGridViewLists.AllowUserToDeleteRows = false;
+            this.dataGridViewLists.AllowUserToOrderColumns = true;
+            this.dataGridViewLists.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewLists.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewLists.Name = "dataGridViewLists";
+            this.dataGridViewLists.ReadOnly = true;
+            this.dataGridViewLists.Size = new System.Drawing.Size(968, 422);
+            this.dataGridViewLists.TabIndex = 0;
             // 
             // panelUserActions
             // 
@@ -662,7 +679,9 @@
             this.panelAuth.ResumeLayout(false);
             this.tabPageUserActions.ResumeLayout(false);
             this.tabControlUserActions.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.tabPageActions.ResumeLayout(false);
+            this.tabPageDataList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLists)).EndInit();
             this.panelUserActions.ResumeLayout(false);
             this.tabPageReflection.ResumeLayout(false);
             this.panelCaptionClassMap.ResumeLayout(false);
@@ -723,10 +742,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn UserType;
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionState;
         private System.Windows.Forms.TabControl tabControlUserActions;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageActions;
         private System.Windows.Forms.ListView listViewUserActions;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageDataList;
         private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.DataGridView dataGridViewLists;
 
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace TaskManagerCore {
         void Load();
         User GetUserByName(string userName);
         void Save();
+        List<object> GetCollectionByClassName(string className);
     }
 
     [UserAction("General", new UserTypes[] { UserTypes.Administrator, UserTypes.Manager, UserTypes.Developer })]
@@ -52,14 +54,35 @@ namespace TaskManagerCore {
             return null;
         }
 
-        [UserAction("My Projects", new UserTypes[] { UserTypes.Manager})]
+        [UserAction("My Projects", new UserTypes[] { UserTypes.Manager })]
         public List<Project> ListMyProjects(Manager mgr) {
             return null;
         }
 
-        [UserAction("My Tasks", new UserTypes[] { UserTypes.Developer})]
-        public List<Project> ListMyProjects(Developer dev) {
+        [UserAction("My Development Tasks", new UserTypes[] { UserTypes.Developer })]
+        public List<DevTask> ListMyDevTasks(Developer dev) {
             return null;
+        }
+
+        [UserAction("My Test Tasks", new UserTypes[] { UserTypes.Developer })]
+        public List<TestTask> ListMyTestTasks(Developer dev) {
+            return null;
+        }
+
+        public List<object> GetCollectionByClassName(string className) {
+            List<object> list=null;
+            //object obj=this.GetType().GetMethod(className).Invoke(this, null);
+            switch (className) {
+                case "ListProjects":
+                case "List<Project>": {  list=ListProjects().Cast<object>().ToList(); }
+                break;
+                case "ListUsers":
+                case "List<User>": { list=ListUsers().Cast<object>().ToList(); }
+                break;
+                default:
+                break;
+            }
+            return list;
         }
 
         public void Load() {

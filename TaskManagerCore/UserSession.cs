@@ -104,7 +104,7 @@ namespace TaskManagerCore {
                     //userSession.Inv
                 } else
                     if (userSession.SessionType == UserSessionTypes.Automatic) {
-                        if (counter++ > 10) { break; }
+                        //if (counter++ > 10) { break; }
                         Console.Write("{0}", Task.CurrentId);
                         Thread.Sleep(2000); // do some heavy work
                     }

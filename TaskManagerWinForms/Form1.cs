@@ -39,6 +39,21 @@ namespace TaskManagerWinForms {
 
         private object FormAskParameters(UserSession userSession, MethodInfo meth) {
             MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
+            if (meth.GetParameters().Length == 0) {
+                if (meth.ReturnType.IsGenericType) {
+                    ReflectionInfo ri = new ReflectionInfo();
+                    Type cls = meth.GetType();
+                    List<object> list= vTaskManager.Storage.GetCollectionByClassName(meth.Name);
+                    dataGridViewLists.DataSource = list;
+                    tabControlUserActions.SelectedTab = tabPageDataList;
+
+                }
+
+                return null; }
+            ParamsForm pf = new ParamsForm(meth,vTaskManager);
+            if (pf.ShowDialog() == DialogResult.OK) {
+            }
+            pf.Dispose();
             return null;
         }
 
@@ -260,7 +275,7 @@ namespace TaskManagerWinForms {
                 ListViewItem lvi = (sender as ListView).FocusedItem;
                 if (lvi == null) { return; }
                 vTaskManager.MainUserSession.EnqueueTask(new UserTask(lvi.Tag, Guid.Parse(lvi.Name))); //RRR
-                MessageBox.Show(string.Format("[{0}] {1} {2} {3}", Thread.CurrentThread.ManagedThreadId, lvi.Name, lvi.Text, lvi.Tag.ToString()));
+                // MessageBox.Show(string.Format("[{0}] {1} {2} {3}", Thread.CurrentThread.ManagedThreadId, lvi.Name, lvi.Text, lvi.Tag.ToString()));
             }
         }
 
