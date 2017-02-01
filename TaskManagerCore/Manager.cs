@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManagerCore {
-    class Manager:User {
+    public class Manager:User {
         public Manager(string userName)
             : base(userName, UserTypes.Manager, UserStates.Unlocked) {
 

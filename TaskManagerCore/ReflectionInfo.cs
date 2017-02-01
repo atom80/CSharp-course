@@ -27,7 +27,6 @@ namespace TaskManagerCore {
         public List<string> GetUserActionTopics(User user) {
             List<string> topicsList = new List<string>();
             foreach (Type cls in GetAllowedClasses(user)) {
-
             }
             return topicsList;
         }

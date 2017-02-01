@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TaskManagerCore {
     [UserAction("Projects", new UserTypes[] { UserTypes.Manager, UserTypes.Developer })]
-    class Project {
+    public class Project {
         [UserAction("Projects", new UserTypes[] { UserTypes.Manager, UserTypes.Developer })]
         public static void ListProjects() { }
 

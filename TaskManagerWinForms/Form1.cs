@@ -19,6 +19,7 @@ namespace TaskManagerWinForms {
             IStorage storage = new Storage();
             vTaskManager = new TaskManagerCore.TaskManager(storage, new AuthForms(this, storage));
             vTaskManager.SessionChangedEvent += SessionChangedHandler;
+            vTaskManager.DoAskParameters += DoAskParameters;
             //this.Visible = false;
             InitializeComponent();
             //Thread.Sleep(2000);
@@ -34,6 +35,11 @@ namespace TaskManagerWinForms {
             menuStrip1.Enabled = false;
             menuStrip1.Visible = false;
             tablessTabControl1.SelectedTab = tabPageAuthorization;
+        }
+
+        private object FormAskParameters(UserSession userSession, MethodInfo meth) {
+            MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
+            return null;
         }
 
         public void SessionChangedHandler(UserSession session, SessionChangeArgs e) {
@@ -253,9 +259,13 @@ namespace TaskManagerWinForms {
             if (sender is ListView) {
                 ListViewItem lvi = (sender as ListView).FocusedItem;
                 if (lvi == null) { return; }
-                vTaskManager.MainUserSession.EnqueueTask(new UserTask(lvi.Tag));
-                MessageBox.Show(string.Format("{0} {1} {2}", lvi.Name, lvi.Text, lvi.Tag.ToString()));
+                vTaskManager.MainUserSession.EnqueueTask(new UserTask(lvi.Tag, Guid.Parse(lvi.Name))); //RRR
+                MessageBox.Show(string.Format("[{0}] {1} {2} {3}", Thread.CurrentThread.ManagedThreadId, lvi.Name, lvi.Text, lvi.Tag.ToString()));
             }
+        }
+
+        private object DoAskParameters(UserSession userSession, MethodInfo meth) {
+            return this.Invoke(new AskParameters(FormAskParameters), new object[] { userSession, meth });
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {

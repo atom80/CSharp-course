@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin.cs" />
@@ -52,13 +53,26 @@
     <Compile Include="ReflectionInfo.cs" />
     <Compile Include="Sprint.cs" />
     <Compile Include="Storage.cs" />
-    <Compile Include="Task.cs" />
+    <Compile Include="BaseTask.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="TestTask.cs" />
     <Compile Include="TMTimer.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="UserStory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

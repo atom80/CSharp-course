@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Collections.Concurrent;
+using System.Reflection;
+
 
 namespace TaskManagerCore {
 
     public class TaskManager {
+
         private TMTimer vTimer;
         public TMTimer Timer { get { return vTimer; } }
         private UserSession vMainUserSession;
@@ -37,14 +40,21 @@ namespace TaskManagerCore {
                     vUserSessions.Remove(session);
                 }
             }
-            if ((SessionChangedEvent != null) /*&& (!vIsInShutdown)*/) { // RRR
+            if ((SessionChangedEvent != null)&&((session.SessionType==UserSessionTypes.Automatic) || (!vIsInShutdown))) { // RRR
                 SessionChangedEvent(session, e);
             }
+        }
+
+        public AskParameters DoAskParameters;
+        public object DoAskParametersAutomatic(UserSession userSession, MethodInfo meth) {
+            return null;
+
         }
 
         public bool LogonUser() {
             vMainUserSession = vAuthenticator.AuthenticateUser();
             vMainUserSession.SessionChangedEvent += SessionChangedHandler;
+            vMainUserSession.DoAskParameters += DoAskParameters;
             lock (this) {
                 vUserSessions.Add(vMainUserSession);
             }
@@ -64,6 +74,7 @@ namespace TaskManagerCore {
                 bgUserSession = new UserSession(null, UserSessionTypes.Automatic, bgUser);
                 lock (this) { vUserSessions.Add(bgUserSession); }
                 bgUserSession.SessionChangedEvent += SessionChangedHandler;
+                bgUserSession.DoAskParameters += DoAskParametersAutomatic;
                 bgUserSession.Start();
             }
         }
