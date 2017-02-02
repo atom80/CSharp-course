@@ -47,6 +47,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.DotMemoryUnit.2.3.20160517.113140\Lib\dotMemory.Unit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -63,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -88,6 +94,10 @@
     <ProjectReference Include="..\TaskManagerCore\TaskManagerCore.csproj">
       <Project>{3d4b5418-8307-4e37-85aa-b3510f14f759}</Project>
       <Name>TaskManagerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaskManagerWinForms\TaskManagerWinForms.csproj">
+      <Project>{91318854-17e5-4324-a62e-1f44d957475a}</Project>
+      <Name>TaskManagerWinForms</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

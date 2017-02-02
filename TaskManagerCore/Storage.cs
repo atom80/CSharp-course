@@ -14,7 +14,7 @@ namespace TaskManagerCore {
         User GetUserByName(string userName);
         void Save();
         List<object> GetCollectionByClassName(string className);
-        void DoAction(string className, string methodName, List<object> parameters);
+        void DoAction(string className, string methodName, IList<object> parameters);
     }
 
     [UserAction("General", new UserTypes[] { UserTypes.Administrator, UserTypes.Manager, UserTypes.Developer })]
@@ -71,12 +71,14 @@ namespace TaskManagerCore {
             return null;
         }
 
-        public void DoAction(string className, string methodName, List<object> parameters) {
+        public void DoAction(string className, string methodName, IList<object> parameters) {
             ReflectionInfo ri = new ReflectionInfo();
             Type cls=ri.Classes.First(x=>x.Name==className);
             object[] prm = null;
             if ((parameters != null) && (parameters.Count != 0)) { prm = parameters.ToArray(); }
-            object result=cls.GetMethod(methodName,BindingFlags.Public|BindingFlags.Static).Invoke(null, prm);
+            MethodInfo meth = cls.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
+            if (meth == null) { throw new UserException("Method not found :("); } // RRR - exception needed
+            object result=meth.Invoke(null, prm);
             switch (className) { // RRR 
                 case "User": {
                     User user =(User)result;
