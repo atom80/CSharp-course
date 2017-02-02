@@ -74,12 +74,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReflectionInfo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ReflectionInfo.Designer.cs">
-      <DependentUpon>ReflectionInfo.cs</DependentUpon>
-    </Compile>
     <Compile Include="TablessTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -98,9 +92,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ReflectionInfo.resx">
-      <DependentUpon>ReflectionInfo.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <None Include="ClassDiagram2.cd" />
     <None Include="Properties\Settings.settings">
@@ -115,11 +106,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="TaskManager.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TaskManagerCore\TaskManagerCore.csproj">

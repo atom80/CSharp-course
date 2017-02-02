@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace TaskManagerCore {
+    [Serializable]
     public class UserException:Exception {
           public UserException()
     {

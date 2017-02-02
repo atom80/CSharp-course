@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="TaskManagerConsole.AuthConsole">
+    <Position X="6.75" Y="10.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AuthConsole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskManagerConsole.AuthForms">
+    <Position X="8.25" Y="10.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AuthForms.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TaskManagerCore.Admin">
+    <Position X="0.75" Y="5.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.UserAction">
+    <Position X="16.75" Y="15.5" Width="3.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.Authenticator">
+    <Position X="5.5" Y="7.5" Width="4.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="TaskManagerCore.BaseTask">
+    <Position X="1.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.Developer">
+    <Position X="6.5" Y="5.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.DevTask">
+    <Position X="2.75" Y="10" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.Manager">
+    <Position X="3.5" Y="5.25" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.Project">
+    <Position X="4.75" Y="9.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.ReflectionInfo">
+    <Position X="14.75" Y="3.5" Width="4.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.Storage" BaseTypeListCollapsed="true">
+    <Position X="16.75" Y="7.5" Width="5.25" />
+    <TypeIdentifier />
+    <Lollipop Position="0.236" Collapsed="true" />
+  </Class>
+  <Class Name="TaskManagerCore.TaskManager">
+    <Position X="8" Y="0.5" Width="5.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.TestTask">
+    <Position X="0.5" Y="10" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.TMTimerEventArgs">
+    <Position X="7.25" Y="13.75" Width="2.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.TMTimer">
+    <Position X="4.5" Y="13.75" Width="2.5" />
+    <NestedTypes>
+      <Delegate Name="TaskManagerCore.TMTimer.TMOnTimerhandler" Collapsed="true">
+        <TypeIdentifier />
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.User">
+    <Position X="2.25" Y="0.5" Width="4.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.UserException">
+    <Position X="0.5" Y="15" Width="3.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.SessionChangeArgs">
+    <Position X="16.75" Y="13.5" Width="3.25" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.UserTask">
+    <Position X="16.75" Y="11.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerCore.UserSession" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="7.5" Width="5.75" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="TaskManagerWinForms.Form1">
+    <Position X="16.5" Y="0.5" Width="4.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="TaskManagerWinForms.ParamsForm">
+    <Position X="11.75" Y="5.25" Width="4" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="TaskManagerCore.IAuthenticator">
+    <Position X="10" Y="15.25" Width="4.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="TaskManagerCore.IStorage">
+    <Position X="10" Y="12.75" Width="5.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="TaskManagerCore.UserTypes">
+    <Position X="5.75" Y="12" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="TaskManagerCore.UserStates">
+    <Position X="4" Y="12" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="TaskManagerCore.UserSessionTypes">
+    <Position X="2.25" Y="12" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="TaskManagerCore.SessionChangeType">
+    <Position X="0.5" Y="12" Width="1.75" />
+    <TypeIdentifier />
+  </Enum>
+  <Delegate Name="TaskManagerCore.SessionChangedHandler">
+    <Position X="2.25" Y="13.75" Width="2" />
+    <TypeIdentifier />
+  </Delegate>
+  <Delegate Name="TaskManagerCore.AskParameters">
+    <Position X="0.5" Y="13.75" Width="1.75" />
+    <TypeIdentifier />
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
