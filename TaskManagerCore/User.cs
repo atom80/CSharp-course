@@ -48,7 +48,6 @@ namespace TaskManagerCore {
             return user;
         }
 
-
         [UserAction("Delete user account", new UserTypes[] { UserTypes.Administrator })]
         //[ActionGuid("59197389-95D0-4B46-B77C-93635C153C06")]
         public void Delete() { }

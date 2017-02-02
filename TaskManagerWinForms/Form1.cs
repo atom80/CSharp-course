@@ -38,7 +38,7 @@ namespace TaskManagerWinForms {
         }
 
         private List<object> FormAskParameters(UserSession userSession, MethodInfo meth) {
-            MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
+            //MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
             if (meth.GetParameters().Length == 0) {
                 if (meth.ReturnType.IsGenericType) {
                     ReflectionInfo ri = new ReflectionInfo();
@@ -48,7 +48,7 @@ namespace TaskManagerWinForms {
                     tabControlUserActions.SelectedTab = tabPageDataList;
 
                 }
-
+                 //MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
                 return null;
             }
 
@@ -57,11 +57,14 @@ namespace TaskManagerWinForms {
             var res = pf.ShowDialog();
             if (res == DialogResult.OK) {
                 data = pf.GetParams();
-                vTaskManager.Storage.DoAction(meth.DeclaringType.Name, meth.Name, data);
+                try {
+                    vTaskManager.Storage.DoAction(meth.DeclaringType.Name, meth.Name, data);
+                } catch (Exception e) {
+                    string errMsg=string.Format("I tried to invoke {0}\n but FAILED: {1}",meth,e.Message);
+                    MessageBox.Show(errMsg, "Oops!",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
             }
-
             pf.Dispose();
-
             return data;
         }
 
