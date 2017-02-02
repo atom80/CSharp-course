@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Collections.Concurrent;
+using System.Reflection;
+
 
 namespace TaskManagerCore {
 
     public class TaskManager {
+
         private TMTimer vTimer;
         public TMTimer Timer { get { return vTimer; } }
         private UserSession vMainUserSession;
+        public UserSession MainUserSession { get { return vMainUserSession; } }
 
         private bool vIsInShutdown = false;
 
@@ -25,24 +29,32 @@ namespace TaskManagerCore {
 
         public event SessionChangedHandler SessionChangedEvent;
 
-        public void SessionChangedHandler(UserSession session, SessionChangeType change) {
-            if ((session.SessionType != UserSessionTypes.Automatic) && (change != SessionChangeType.Started)) {
+        public void SessionChangedHandler(UserSession session, SessionChangeArgs e) {
+            SessionChangeType changeType = e.ChangeType;
+            if ((session.SessionType != UserSessionTypes.Automatic) && (changeType != SessionChangeType.Started)) {
                 vMainUserSession = null;
-                change = SessionChangeType.MainSessionStopped;
+                changeType = SessionChangeType.MainSessionStopped;
             }
-            if (change != SessionChangeType.Started) {
+            if (changeType != SessionChangeType.Started) {
                 lock (this) {
                     vUserSessions.Remove(session);
                 }
             }
-            if ((SessionChangedEvent != null) && (!vIsInShutdown)) {
-                SessionChangedEvent(session, change);
+            if ((SessionChangedEvent != null)&&((session.SessionType==UserSessionTypes.Automatic) || (!vIsInShutdown))) { // RRR
+                SessionChangedEvent(session, e);
             }
+        }
+
+        public AskParameters DoAskParameters;
+        public List<object> DoAskParametersAutomatic(UserSession userSession, MethodInfo meth) {
+            return null;
+
         }
 
         public bool LogonUser() {
             vMainUserSession = vAuthenticator.AuthenticateUser();
             vMainUserSession.SessionChangedEvent += SessionChangedHandler;
+            vMainUserSession.DoAskParameters += DoAskParameters;
             lock (this) {
                 vUserSessions.Add(vMainUserSession);
             }
@@ -62,18 +74,19 @@ namespace TaskManagerCore {
                 bgUserSession = new UserSession(null, UserSessionTypes.Automatic, bgUser);
                 lock (this) { vUserSessions.Add(bgUserSession); }
                 bgUserSession.SessionChangedEvent += SessionChangedHandler;
+                bgUserSession.DoAskParameters += DoAskParametersAutomatic;
                 bgUserSession.Start();
             }
         }
 
         public void LogoffUser() {
-            vMainUserSession.CancellationTokenSource.Cancel(false);
+            vMainUserSession.SessionCancellationTokenSource.Cancel(false);
             Task.WaitAll(vMainUserSession.ActionHandler);
             lock (this) {
                 vUserSessions.Remove(vMainUserSession);
             }
             if (SessionChangedEvent != null) {
-                SessionChangedEvent(vMainUserSession, SessionChangeType.MainSessionStopped);
+                SessionChangedEvent(vMainUserSession, new SessionChangeArgs { ChangeType = SessionChangeType.MainSessionStopped });
             }
             vMainUserSession = null;
             Thread.Sleep(2000);
@@ -99,7 +112,7 @@ namespace TaskManagerCore {
             vIsInShutdown = true;
             List<Task> taskList = new List<Task>();
             foreach (UserSession session in vUserSessions) {
-                session.CancellationTokenSource.Cancel(true);
+                session.SessionCancellationTokenSource.Cancel(true);
                 taskList.Add(session.ActionHandler);
             }
             Task.WaitAll(taskList.ToArray());

@@ -19,6 +19,7 @@ namespace TaskManagerWinForms {
             IStorage storage = new Storage();
             vTaskManager = new TaskManagerCore.TaskManager(storage, new AuthForms(this, storage));
             vTaskManager.SessionChangedEvent += SessionChangedHandler;
+            vTaskManager.DoAskParameters += DoAskParameters;
             //this.Visible = false;
             InitializeComponent();
             //Thread.Sleep(2000);
@@ -36,8 +37,37 @@ namespace TaskManagerWinForms {
             tablessTabControl1.SelectedTab = tabPageAuthorization;
         }
 
-        public void SessionChangedHandler(UserSession session, SessionChangeType change) {
-            switch (change) {
+        private List<object> FormAskParameters(UserSession userSession, MethodInfo meth) {
+            MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
+            if (meth.GetParameters().Length == 0) {
+                if (meth.ReturnType.IsGenericType) {
+                    ReflectionInfo ri = new ReflectionInfo();
+                    Type cls = meth.GetType();
+                    List<object> list = vTaskManager.Storage.GetCollectionByClassName(meth.Name);
+                    dataGridViewLists.DataSource = list;
+                    tabControlUserActions.SelectedTab = tabPageDataList;
+
+                }
+
+                return null;
+            }
+
+            List<object> data = null;
+            ParamsForm pf = new ParamsForm(meth, vTaskManager);
+            var res = pf.ShowDialog();
+            if (res == DialogResult.OK) {
+                data = pf.GetParams();
+                vTaskManager.Storage.DoAction(meth.DeclaringType.Name, meth.Name, data);
+            }
+
+            pf.Dispose();
+
+            return data;
+        }
+
+        public void SessionChangedHandler(UserSession session, SessionChangeArgs e) {
+            SessionChangeType changeType = e.ChangeType;
+            switch (changeType) {
                 case SessionChangeType.Started:
                 case SessionChangeType.Stopped:
                 case SessionChangeType.MainSessionStopped: {
@@ -45,7 +75,7 @@ namespace TaskManagerWinForms {
                         int sessionCount = (from UserSession us in vTaskManager.UserSessions where (us.ActionHandler.Status == TaskStatus.Running) select us).ToList().Count;
                         lblUsersLoggedOn.Text = string.Format("Users: {0}", sessionCount);
                     }
-                    if (change == SessionChangeType.MainSessionStopped) {
+                    if (changeType == SessionChangeType.MainSessionStopped) {
                         this.Invoke(new FormSetAuthPage(SetAuthPage));
                     }
                 }
@@ -81,6 +111,29 @@ namespace TaskManagerWinForms {
         }
 
         private void tabPageReflection_Enter(object sender, EventArgs e) {
+        }
+
+        private async void button1_Click(object sender, EventArgs e) {
+            bool logonOk = false;
+            try {
+                logonOk = vTaskManager.LogonUser();
+                menuStrip1.Enabled = true;
+                menuStrip1.Visible = true;
+                tablessTabControl1.SelectedTab = tabPageUserActions;
+            } catch (Exception exc) {
+                lblErrorMessage.Text = "Authorization failed: " + exc.Message;
+            }
+            if (logonOk) {
+                InitializeClassMap();
+                InitializeUserActions(vTaskManager.MainUserSession.SessionUser);
+                if (vTaskManager.UserSessions.Count < 2) {
+                    Task taskBgUsers = Task.Run(() => vTaskManager.LogonBackgroundUsers(10));
+                    await taskBgUsers;
+                }
+            }
+        }
+
+        private void InitializeClassMap() { /// most of this code should be moved to ReflectionInfo
             ReflectionInfo refInfo = new ReflectionInfo();
             treeView1.Nodes.Clear();
             TreeNode classNode = treeView1.Nodes.Add("Classes");
@@ -127,22 +180,31 @@ namespace TaskManagerWinForms {
             //foreach (Type refType in (from rt in refInfo.Types where rt. select rt)) {
             //    TreeNode newNode = attrNode.Nodes.Add(refType.Name);
             //}
-
         }
 
-        private async void button1_Click(object sender, EventArgs e) {
-            bool logonOk =false;
-            try {
-                logonOk = vTaskManager.LogonUser();
-                menuStrip1.Enabled = true;
-                menuStrip1.Visible = true;
-                tablessTabControl1.SelectedTab = tabPageUserActions;
-            } catch (Exception exc) {
-                lblErrorMessage.Text = "Authorization failed: " + exc.Message;
-            }
-            if ((logonOk)&&(vTaskManager.UserSessions.Count < 2)) {
-                Task taskBgUsers = Task.Run(()=>vTaskManager.LogonBackgroundUsers(10));
-                await taskBgUsers;
+        private void InitializeUserActions(User user) {
+            Random rnd = new Random(Guid.NewGuid().GetHashCode());
+            labelUserActions.Text = string.Format("User actions for {0}", user.UserFullName);
+            ReflectionInfo ri = new ReflectionInfo();
+            UserTypes userType = user.UserType;
+            listViewUserActions.Items.Clear();
+            ListViewGroup grp;
+            Attribute attr;
+            foreach (Type cls in ri.GetAllowedClasses(user)) {
+                attr = cls.GetCustomAttribute(typeof(UserAction), false);
+                grp = new ListViewGroup((attr as UserAction).Description);
+                listViewUserActions.Groups.Add(grp);
+                int imgIndex = 0;
+                ListViewItem lvi = null;
+                foreach (MethodInfo meth in ri.GetAllowedMethodForClass(cls, user)) {
+                    attr = meth.GetCustomAttribute(typeof(UserAction), false);
+                    imgIndex = rnd.Next(0, listViewUserActions.LargeImageList.Images.Count + 1);
+                    lvi = listViewUserActions.Items.Add(Guid.NewGuid().ToString(), (attr as UserAction).Description, imgIndex);
+                    lvi.Group = grp;
+                    lvi.ToolTipText = lvi.Name;
+                    lvi.Tag = meth;
+                    //listViewUserActions.Items.Add(new ListViewItem((attr as UserAction).Description,imgIndex, grp));
+                }
             }
         }
 
@@ -153,9 +215,7 @@ namespace TaskManagerWinForms {
 
         private void comboBoxUserName_SelectedIndexChanged(object sender, EventArgs e) {
             if (sender is ComboBox) {
-                if ((sender as ComboBox).Text == "Administrator") {
-                    textBoxPassword.Text = "Administrator";
-                }
+                textBoxPassword.Text = (sender as ComboBox).SelectedValue.ToString();
             }
         }
 
@@ -179,17 +239,23 @@ namespace TaskManagerWinForms {
             timerWaiting.Enabled = true;
         }
 
-        private void timerWaiting_Tick(object sender, EventArgs e) {
+        private void UpdateUserSessionPage() {
             dataGridViewWaiting.Rows.Clear();
-            foreach (UserSession session in vTaskManager.UserSessions) {
-                TaskStatus sessionState = session.ActionHandler.Status;
-                UserSessionTypes sessionType = session.SessionType;
-                string sessionUserAcronym = session.SessionUser.UserAcronym;
-                string sessionUserName = session.SessionUser.UserName;
-                UserTypes sessionUserType = session.SessionUser.UserType;
-                DateTime sessionStartTime = session.SessionStartDateTime;
-                dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserAcronym, sessionUserName, sessionUserType, sessionState);
+            lock (vTaskManager) {
+                foreach (UserSession session in vTaskManager.UserSessions) {
+                    TaskStatus sessionState = session.ActionHandler.Status;
+                    UserSessionTypes sessionType = session.SessionType;
+                    string sessionUserAcronym = session.SessionUser.UserAcronym;
+                    string sessionUserName = session.SessionUser.UserName;
+                    UserTypes sessionUserType = session.SessionUser.UserType;
+                    DateTime sessionStartTime = session.SessionStartDateTime;
+                    dataGridViewWaiting.Rows.Add(0, sessionStartTime, sessionType, sessionUserAcronym, sessionUserName, sessionUserType, sessionState);
+                }
             }
+        }
+
+        private void timerWaiting_Tick(object sender, EventArgs e) {
+            UpdateUserSessionPage();
         }
 
         private void tabPageWaiting_Leave(object sender, EventArgs e) {
@@ -212,5 +278,21 @@ namespace TaskManagerWinForms {
             //}
         }
 
+        private void listViewUserActions_Click(object sender, EventArgs e) {
+            if (sender is ListView) {
+                ListViewItem lvi = (sender as ListView).FocusedItem;
+                if (lvi == null) { return; }
+                vTaskManager.MainUserSession.EnqueueTask(new UserTask(lvi.Tag, Guid.Parse(lvi.Name))); //RRR
+                // MessageBox.Show(string.Format("[{0}] {1} {2} {3}", Thread.CurrentThread.ManagedThreadId, lvi.Name, lvi.Text, lvi.Tag.ToString()));
+            }
+        }
+
+        private List<object> DoAskParameters(UserSession userSession, MethodInfo meth) {
+            return (List<object>)this.Invoke(new AskParameters(FormAskParameters), new object[] { userSession, meth });
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e) {
+
+        }
     }
 }

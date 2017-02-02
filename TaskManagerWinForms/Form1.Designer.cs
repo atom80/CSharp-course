@@ -24,6 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblUsersLoggedOn = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -41,6 +42,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.process1 = new System.Diagnostics.Process();
             this.timerWaiting = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tablessTabControl1 = new TaskManagerWinForms.TablessTabControl();
             this.tabPageAuthorization = new System.Windows.Forms.TabPage();
             this.lblErrorMessage = new System.Windows.Forms.Label();
@@ -53,8 +55,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.btnLogon = new System.Windows.Forms.Button();
             this.tabPageUserActions = new System.Windows.Forms.TabPage();
+            this.tabControlUserActions = new System.Windows.Forms.TabControl();
+            this.tabPageActions = new System.Windows.Forms.TabPage();
+            this.listViewUserActions = new System.Windows.Forms.ListView();
+            this.tabPageDataList = new System.Windows.Forms.TabPage();
+            this.dataGridViewLists = new System.Windows.Forms.DataGridView();
             this.panelUserActions = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelUserActions = new System.Windows.Forms.Label();
             this.tabPageReflection = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelCaptionClassMap = new System.Windows.Forms.Panel();
@@ -70,10 +77,6 @@
             this.SessionState = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel3 = new System.Windows.Forms.Panel();
             this.labelWaiting = new System.Windows.Forms.Label();
-            this.tabControlUserActions = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.listViewUserActions = new System.Windows.Forms.ListView();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -81,14 +84,16 @@
             this.tabPageAuthorization.SuspendLayout();
             this.panelAuth.SuspendLayout();
             this.tabPageUserActions.SuspendLayout();
+            this.tabControlUserActions.SuspendLayout();
+            this.tabPageActions.SuspendLayout();
+            this.tabPageDataList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLists)).BeginInit();
             this.panelUserActions.SuspendLayout();
             this.tabPageReflection.SuspendLayout();
             this.panelCaptionClassMap.SuspendLayout();
             this.tabPageWaiting.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).BeginInit();
             this.panel3.SuspendLayout();
-            this.tabControlUserActions.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -230,6 +235,69 @@
             this.timerWaiting.Interval = 500;
             this.timerWaiting.Tick += new System.EventHandler(this.timerWaiting_Tick);
             // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "agenda.64.png");
+            this.imageList1.Images.SetKeyName(1, "agenda-1.64.png");
+            this.imageList1.Images.SetKeyName(2, "agenda-2.64.png");
+            this.imageList1.Images.SetKeyName(3, "agenda-3.64.png");
+            this.imageList1.Images.SetKeyName(4, "boy.png");
+            this.imageList1.Images.SetKeyName(5, "calendar.64.png");
+            this.imageList1.Images.SetKeyName(6, "calendar-1.64.png");
+            this.imageList1.Images.SetKeyName(7, "calendar-2.64.png");
+            this.imageList1.Images.SetKeyName(8, "calendar-3.64.png");
+            this.imageList1.Images.SetKeyName(9, "file.64.png");
+            this.imageList1.Images.SetKeyName(10, "file-1.64.png");
+            this.imageList1.Images.SetKeyName(11, "file-2.64.png");
+            this.imageList1.Images.SetKeyName(12, "file-3.64.png");
+            this.imageList1.Images.SetKeyName(13, "file-4.64.png");
+            this.imageList1.Images.SetKeyName(14, "girl.png");
+            this.imageList1.Images.SetKeyName(15, "girl-1.png");
+            this.imageList1.Images.SetKeyName(16, "girl-2.png");
+            this.imageList1.Images.SetKeyName(17, "girl-3.png");
+            this.imageList1.Images.SetKeyName(18, "interface.64.png");
+            this.imageList1.Images.SetKeyName(19, "interface-1.64.png");
+            this.imageList1.Images.SetKeyName(20, "interface-2.64.png");
+            this.imageList1.Images.SetKeyName(21, "interface-3.64.png");
+            this.imageList1.Images.SetKeyName(22, "interface-4.64.png");
+            this.imageList1.Images.SetKeyName(23, "interface-5.64.png");
+            this.imageList1.Images.SetKeyName(24, "interface-6.64.png");
+            this.imageList1.Images.SetKeyName(25, "interface-7.64.png");
+            this.imageList1.Images.SetKeyName(26, "interface-8.64.png");
+            this.imageList1.Images.SetKeyName(27, "interface-9.64.png");
+            this.imageList1.Images.SetKeyName(28, "interface-10.64.png");
+            this.imageList1.Images.SetKeyName(29, "interface-11.64.png");
+            this.imageList1.Images.SetKeyName(30, "interface-12.64.png");
+            this.imageList1.Images.SetKeyName(31, "interface-13.64.png");
+            this.imageList1.Images.SetKeyName(32, "interface-14.64.png");
+            this.imageList1.Images.SetKeyName(33, "interface-15.64.png");
+            this.imageList1.Images.SetKeyName(34, "interface-16.64.png");
+            this.imageList1.Images.SetKeyName(35, "list.64.png");
+            this.imageList1.Images.SetKeyName(36, "list-1.64.png");
+            this.imageList1.Images.SetKeyName(37, "list-2.64.png");
+            this.imageList1.Images.SetKeyName(38, "list-3.64.png");
+            this.imageList1.Images.SetKeyName(39, "list-4.64.png");
+            this.imageList1.Images.SetKeyName(40, "man.png");
+            this.imageList1.Images.SetKeyName(41, "note.64.png");
+            this.imageList1.Images.SetKeyName(42, "note-1.64.png");
+            this.imageList1.Images.SetKeyName(43, "notebook.64.png");
+            this.imageList1.Images.SetKeyName(44, "notepad.64.png");
+            this.imageList1.Images.SetKeyName(45, "notepad-1.64.png");
+            this.imageList1.Images.SetKeyName(46, "profile.64.png");
+            this.imageList1.Images.SetKeyName(47, "profile-1.64.png");
+            this.imageList1.Images.SetKeyName(48, "profile-2.64.png");
+            this.imageList1.Images.SetKeyName(49, "remove.64.png");
+            this.imageList1.Images.SetKeyName(50, "settings.png");
+            this.imageList1.Images.SetKeyName(51, "time.64.png");
+            this.imageList1.Images.SetKeyName(52, "user.64.png");
+            this.imageList1.Images.SetKeyName(53, "user-1.64.png");
+            this.imageList1.Images.SetKeyName(54, "user-2.64.png");
+            this.imageList1.Images.SetKeyName(55, "user-3.64.png");
+            this.imageList1.Images.SetKeyName(56, "user-4.64.png");
+            this.imageList1.Images.SetKeyName(57, "wrench.png");
+            // 
             // tablessTabControl1
             // 
             this.tablessTabControl1.Controls.Add(this.tabPageAuthorization);
@@ -278,9 +346,9 @@
             this.label4.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label4.Location = new System.Drawing.Point(472, 104);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(132, 13);
+            this.label4.Size = new System.Drawing.Size(144, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Administrator/Administrator";
+            this.label4.Text = "*User password = User name";
             // 
             // textBoxPassword
             // 
@@ -289,7 +357,6 @@
             this.textBoxPassword.PasswordChar = '*';
             this.textBoxPassword.Size = new System.Drawing.Size(302, 20);
             this.textBoxPassword.TabIndex = 2;
-            this.textBoxPassword.Text = "Administrator";
             // 
             // lblPassword
             // 
@@ -318,7 +385,6 @@
             this.comboBoxUserName.Name = "comboBoxUserName";
             this.comboBoxUserName.Size = new System.Drawing.Size(302, 21);
             this.comboBoxUserName.TabIndex = 1;
-            this.comboBoxUserName.Text = "Administrator";
             this.comboBoxUserName.SelectedIndexChanged += new System.EventHandler(this.comboBoxUserName_SelectedIndexChanged);
             // 
             // panelAuth
@@ -365,27 +431,89 @@
             this.tabPageUserActions.TabIndex = 0;
             this.tabPageUserActions.Text = "tabPageUserActions";
             // 
+            // tabControlUserActions
+            // 
+            this.tabControlUserActions.Controls.Add(this.tabPageActions);
+            this.tabControlUserActions.Controls.Add(this.tabPageDataList);
+            this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
+            this.tabControlUserActions.Name = "tabControlUserActions";
+            this.tabControlUserActions.SelectedIndex = 0;
+            this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
+            this.tabControlUserActions.TabIndex = 3;
+            // 
+            // tabPageActions
+            // 
+            this.tabPageActions.Controls.Add(this.listViewUserActions);
+            this.tabPageActions.Location = new System.Drawing.Point(4, 22);
+            this.tabPageActions.Name = "tabPageActions";
+            this.tabPageActions.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageActions.Size = new System.Drawing.Size(974, 428);
+            this.tabPageActions.TabIndex = 0;
+            this.tabPageActions.Text = "Actions";
+            this.tabPageActions.UseVisualStyleBackColor = true;
+            // 
+            // listViewUserActions
+            // 
+            this.listViewUserActions.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewUserActions.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listViewUserActions.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewUserActions.LargeImageList = this.imageList1;
+            this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
+            this.listViewUserActions.MultiSelect = false;
+            this.listViewUserActions.Name = "listViewUserActions";
+            this.listViewUserActions.ShowItemToolTips = true;
+            this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
+            this.listViewUserActions.TabIndex = 0;
+            this.listViewUserActions.UseCompatibleStateImageBehavior = false;
+            this.listViewUserActions.Click += new System.EventHandler(this.listViewUserActions_Click);
+            // 
+            // tabPageDataList
+            // 
+            this.tabPageDataList.Controls.Add(this.dataGridViewLists);
+            this.tabPageDataList.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDataList.Name = "tabPageDataList";
+            this.tabPageDataList.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDataList.Size = new System.Drawing.Size(974, 428);
+            this.tabPageDataList.TabIndex = 1;
+            this.tabPageDataList.Text = "Data list";
+            this.tabPageDataList.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewLists
+            // 
+            this.dataGridViewLists.AllowUserToAddRows = false;
+            this.dataGridViewLists.AllowUserToDeleteRows = false;
+            this.dataGridViewLists.AllowUserToOrderColumns = true;
+            this.dataGridViewLists.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLists.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewLists.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewLists.Name = "dataGridViewLists";
+            this.dataGridViewLists.ReadOnly = true;
+            this.dataGridViewLists.Size = new System.Drawing.Size(968, 422);
+            this.dataGridViewLists.TabIndex = 0;
+            // 
             // panelUserActions
             // 
             this.panelUserActions.BackColor = System.Drawing.SystemColors.ControlDark;
             this.panelUserActions.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelUserActions.Controls.Add(this.label3);
+            this.panelUserActions.Controls.Add(this.labelUserActions);
             this.panelUserActions.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelUserActions.Location = new System.Drawing.Point(3, 3);
             this.panelUserActions.Name = "panelUserActions";
             this.panelUserActions.Size = new System.Drawing.Size(982, 43);
             this.panelUserActions.TabIndex = 2;
             // 
-            // label3
+            // labelUserActions
             // 
-            this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(980, 41);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "User actions";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labelUserActions.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelUserActions.Location = new System.Drawing.Point(0, 0);
+            this.labelUserActions.Name = "labelUserActions";
+            this.labelUserActions.Size = new System.Drawing.Size(980, 41);
+            this.labelUserActions.TabIndex = 0;
+            this.labelUserActions.Text = "User actions";
+            this.labelUserActions.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabPageReflection
             // 
@@ -528,47 +656,6 @@
             this.labelWaiting.Text = "Waiting for logoff...";
             this.labelWaiting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // tabControlUserActions
-            // 
-            this.tabControlUserActions.Controls.Add(this.tabPage1);
-            this.tabControlUserActions.Controls.Add(this.tabPage2);
-            this.tabControlUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlUserActions.Location = new System.Drawing.Point(3, 46);
-            this.tabControlUserActions.Name = "tabControlUserActions";
-            this.tabControlUserActions.SelectedIndex = 0;
-            this.tabControlUserActions.Size = new System.Drawing.Size(982, 454);
-            this.tabControlUserActions.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.listViewUserActions);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(974, 428);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(974, 428);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // listViewUserActions
-            // 
-            this.listViewUserActions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewUserActions.Location = new System.Drawing.Point(3, 3);
-            this.listViewUserActions.Name = "listViewUserActions";
-            this.listViewUserActions.Size = new System.Drawing.Size(968, 422);
-            this.listViewUserActions.TabIndex = 0;
-            this.listViewUserActions.UseCompatibleStateImageBehavior = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -580,6 +667,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Name = "Form1";
             this.Text = "Task Manager v.0.1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -590,14 +678,16 @@
             this.tabPageAuthorization.PerformLayout();
             this.panelAuth.ResumeLayout(false);
             this.tabPageUserActions.ResumeLayout(false);
+            this.tabControlUserActions.ResumeLayout(false);
+            this.tabPageActions.ResumeLayout(false);
+            this.tabPageDataList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLists)).EndInit();
             this.panelUserActions.ResumeLayout(false);
             this.tabPageReflection.ResumeLayout(false);
             this.panelCaptionClassMap.ResumeLayout(false);
             this.tabPageWaiting.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewWaiting)).EndInit();
             this.panel3.ResumeLayout(false);
-            this.tabControlUserActions.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -627,7 +717,7 @@
         private System.Windows.Forms.Panel panelAuth;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panelUserActions;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelUserActions;
         private System.Windows.Forms.ToolStripMenuItem userActionsToolStripMenuItem;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.ComboBox comboBoxUserName;
@@ -652,9 +742,11 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn UserType;
         private System.Windows.Forms.DataGridViewTextBoxColumn SessionState;
         private System.Windows.Forms.TabControl tabControlUserActions;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPageActions;
         private System.Windows.Forms.ListView listViewUserActions;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageDataList;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.DataGridView dataGridViewLists;
 
 
 

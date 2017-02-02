@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 namespace TaskManagerCore {
     public class UserAction : Attribute {
         private string vDescription;
-        private UserTypes[] vUserTypes;
+        public string Description { get { return vDescription; } set { vDescription = value; } }
+        
+        private UserTypes[] vAllowed;
+        public UserTypes[] Allowed { get { return vAllowed; } set { vAllowed = value; } }
+
         public UserAction(string description, UserTypes[] usersAllowed) {
             vDescription = description;
-            vUserTypes = usersAllowed;
+            vAllowed = usersAllowed;
             // Check authorization here?
         }
     }
