@@ -58,6 +58,7 @@
     <Compile Include="TestTask.cs" />
     <Compile Include="TMTimer.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="UserExceptions.cs" />
     <Compile Include="UserSession.cs" />
     <Compile Include="UserStory.cs" />
   </ItemGroup>

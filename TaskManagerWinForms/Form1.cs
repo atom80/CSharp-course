@@ -59,7 +59,10 @@ namespace TaskManagerWinForms {
                 data = pf.GetParams();
                 try {
                     vTaskManager.Storage.DoAction(meth.DeclaringType.Name, meth.Name, data);
-                } catch (Exception e) {
+                } catch (UserException e) {
+                    MessageBox.Show(e.Message, "Oops! Not implemented yet.",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                }
+                catch (Exception e) {
                     string errMsg=string.Format("I tried to invoke {0}\n but FAILED: {1}",meth,e.Message);
                     MessageBox.Show(errMsg, "Oops!",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 }

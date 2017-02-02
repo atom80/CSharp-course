@@ -77,7 +77,7 @@ namespace TaskManagerCore {
             object[] prm = null;
             if ((parameters != null) && (parameters.Count != 0)) { prm = parameters.ToArray(); }
             MethodInfo meth = cls.GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);
-            if (meth == null) { throw new Exception("Method not found :("); } // RRR - exception needed
+            if (meth == null) { throw new UserException("Method not found :("); } // RRR - exception needed
             object result=meth.Invoke(null, prm);
             switch (className) { // RRR 
                 case "User": {
