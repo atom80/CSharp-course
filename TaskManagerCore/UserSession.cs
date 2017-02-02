@@ -25,7 +25,7 @@ namespace TaskManagerCore {
     }
 
     public delegate void SessionChangedHandler(UserSession session, SessionChangeArgs e);
-    public delegate object AskParameters(UserSession session, MethodInfo meth);
+    public delegate List<object> AskParameters(UserSession session, MethodInfo meth);
     
     public class UserTask {
         private object vObject = null;
@@ -91,7 +91,9 @@ namespace TaskManagerCore {
                     MethodInfo meth = userTask.Object as MethodInfo;
                     //meth.Invoke()
                     if (DoAskParameters!=null){
+                        Console.WriteLine("\n[{0}] Method: {1}", Task.CurrentId,meth.Name);
                         var result=DoAskParameters(userSession, meth);
+                        //Console.WriteLine("\n[{0}] Result: {1}",result);
                     }
                     //Type cls = meth.DeclaringType;
                     //ParameterInfo[] methParams = meth.GetParameters();

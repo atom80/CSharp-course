@@ -46,7 +46,7 @@ namespace TaskManagerCore {
         }
 
         public AskParameters DoAskParameters;
-        public object DoAskParametersAutomatic(UserSession userSession, MethodInfo meth) {
+        public List<object> DoAskParametersAutomatic(UserSession userSession, MethodInfo meth) {
             return null;
 
         }

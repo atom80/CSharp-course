@@ -37,24 +37,32 @@ namespace TaskManagerWinForms {
             tablessTabControl1.SelectedTab = tabPageAuthorization;
         }
 
-        private object FormAskParameters(UserSession userSession, MethodInfo meth) {
+        private List<object> FormAskParameters(UserSession userSession, MethodInfo meth) {
             MessageBox.Show(string.Format("[{0}] Parameters requested: {1}", Thread.CurrentThread.ManagedThreadId, meth));
             if (meth.GetParameters().Length == 0) {
                 if (meth.ReturnType.IsGenericType) {
                     ReflectionInfo ri = new ReflectionInfo();
                     Type cls = meth.GetType();
-                    List<object> list= vTaskManager.Storage.GetCollectionByClassName(meth.Name);
+                    List<object> list = vTaskManager.Storage.GetCollectionByClassName(meth.Name);
                     dataGridViewLists.DataSource = list;
                     tabControlUserActions.SelectedTab = tabPageDataList;
 
                 }
 
-                return null; }
-            ParamsForm pf = new ParamsForm(meth,vTaskManager);
-            if (pf.ShowDialog() == DialogResult.OK) {
+                return null;
             }
+
+            List<object> data = null;
+            ParamsForm pf = new ParamsForm(meth, vTaskManager);
+            var res = pf.ShowDialog();
+            if (res == DialogResult.OK) {
+                data = pf.GetParams();
+                vTaskManager.Storage.DoAction(meth.DeclaringType.Name, meth.Name, data);
+            }
+
             pf.Dispose();
-            return null;
+
+            return data;
         }
 
         public void SessionChangedHandler(UserSession session, SessionChangeArgs e) {
@@ -279,8 +287,8 @@ namespace TaskManagerWinForms {
             }
         }
 
-        private object DoAskParameters(UserSession userSession, MethodInfo meth) {
-            return this.Invoke(new AskParameters(FormAskParameters), new object[] { userSession, meth });
+        private List<object> DoAskParameters(UserSession userSession, MethodInfo meth) {
+            return (List<object>)this.Invoke(new AskParameters(FormAskParameters), new object[] { userSession, meth });
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e) {

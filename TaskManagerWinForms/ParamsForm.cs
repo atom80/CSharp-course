@@ -53,11 +53,21 @@ namespace TaskManagerWinForms {
 
         }
 
+        public List<object>GetParams() {
+            List<object> list=new List<object>();
+            for (int i = 0; i < dataGridView1.Rows.Count;i++ ) {
+                list.Add(dataGridView1.Rows[i].Cells[2].Value);
+            }
+            return list;
+        }
+
         private void btnOk_Click(object sender, EventArgs e) {
+            DialogResult = DialogResult.OK;
             this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e) {
+            DialogResult = DialogResult.Cancel;
             this.Close();
         }
     }

@@ -17,7 +17,7 @@ namespace TaskManagerCore {
         Unlocked = 1
     }
 
-    [UserAction("User Accounts",new UserTypes[]{UserTypes.Administrator})]
+    [UserAction("User Accounts", new UserTypes[] { UserTypes.Administrator })]
     public abstract class User {
         private string vUserName = "";
         public string UserName { get { return vUserName; } }
@@ -26,7 +26,7 @@ namespace TaskManagerCore {
         private string vUserAcronym = "";
         public string UserAcronym { get { return vUserAcronym; } }
 
-        private Guid vUserId=Guid.NewGuid();
+        private Guid vUserId = Guid.NewGuid();
         public Guid UserId { get { return vUserId; } }
 
         private UserTypes vUserType = UserTypes.Unknown;
@@ -35,13 +35,17 @@ namespace TaskManagerCore {
         private UserStates vUserState = UserStates.Locked;
         public UserStates UserState { get { return vUserState; } }
 
-        [UserAction("Users", new UserTypes[] { UserTypes.Administrator })]
-        public static void ListUsers() { }
-
         [UserAction("Create user account", new UserTypes[] { UserTypes.Administrator })]
         //[ActionGuid("4F34259A-9CE2-42D2-A4F5-B086AF9A93F2")]
-        public static User Create(string userName, UserTypes userType, UserStates userState) {
+        public User Create(string userName, UserTypes userType, UserStates userState) {
             return null;
+        }
+
+        public static User Create(string userName, string userType, string userState) {
+            
+            User user = User.Factory(userName, (UserTypes)Enum.Parse(typeof(UserTypes), userType,true));
+            user.vUserState = (UserStates)Enum.Parse(typeof(UserStates), userState,true);
+            return user;
         }
 
 
@@ -50,10 +54,14 @@ namespace TaskManagerCore {
         public void Delete() { }
 
         [UserAction("Lock user account", new UserTypes[] { UserTypes.Administrator })]
-        public void Lock() { }
+        public static void Lock(User user) {
+            user.vUserState = UserStates.Locked;
+        }
 
         [UserAction("Unlock user account", new UserTypes[] { UserTypes.Administrator })]
-        public void Unlock() { }
+        public static void Unlock(User user) {
+            user.vUserState = UserStates.Unlocked;
+        }
 
         public static User[] GetUsers() {
             User[] users = null;

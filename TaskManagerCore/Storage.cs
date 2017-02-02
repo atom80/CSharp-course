@@ -5,6 +5,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TaskManagerCore {
     public interface IStorage {
@@ -13,6 +14,7 @@ namespace TaskManagerCore {
         User GetUserByName(string userName);
         void Save();
         List<object> GetCollectionByClassName(string className);
+        void DoAction(string className, string methodName, List<object> parameters);
     }
 
     [UserAction("General", new UserTypes[] { UserTypes.Administrator, UserTypes.Manager, UserTypes.Developer })]
@@ -46,7 +48,7 @@ namespace TaskManagerCore {
 
         [UserAction("All Projects", new UserTypes[] { UserTypes.Administrator, UserTypes.Manager, UserTypes.Developer })]
         public List<Project> ListProjects() {
-            return null;
+            return new List<Project>();
         }
 
         [UserAction("All Tasks", new UserTypes[] { UserTypes.Administrator, UserTypes.Manager, UserTypes.Developer })]
@@ -69,15 +71,34 @@ namespace TaskManagerCore {
             return null;
         }
 
+        public void DoAction(string className, string methodName, List<object> parameters) {
+            ReflectionInfo ri = new ReflectionInfo();
+            Type cls=ri.Classes.First(x=>x.Name==className);
+            object[] prm = null;
+            if ((parameters != null) && (parameters.Count != 0)) { prm = parameters.ToArray(); }
+            object result=cls.GetMethod(methodName,BindingFlags.Public|BindingFlags.Static).Invoke(null, prm);
+            switch (className) { // RRR 
+                case "User": {
+                    User user =(User)result;
+                        vUsers.TryAdd(user.UserId,user);
+                    }
+                break;
+                default:
+                break;
+            }
+
+        }
+
+
         public List<object> GetCollectionByClassName(string className) {
-            List<object> list=null;
+            List<object> list = null;
             //object obj=this.GetType().GetMethod(className).Invoke(this, null);
-            switch (className) {
+            switch (className) { // RRR
                 case "ListProjects":
-                case "List<Project>": {  list=ListProjects().Cast<object>().ToList(); }
+                case "List<Project>": { list = ListProjects().Cast<object>().ToList(); }
                 break;
                 case "ListUsers":
-                case "List<User>": { list=ListUsers().Cast<object>().ToList(); }
+                case "List<User>": { list = ListUsers().Cast<object>().ToList(); }
                 break;
                 default:
                 break;
