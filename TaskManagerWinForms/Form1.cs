@@ -276,7 +276,7 @@ namespace TaskManagerWinForms {
 
         private void tabPageAuthorization_Enter(object sender, EventArgs e) {
             lblErrorMessage.Text = "";
-            comboBoxUserName.DataSource = vTaskManager.Storage.Users;
+            comboBoxUserName.DataSource = (from User user in vTaskManager.Storage.Users where (user.UserState!=UserStates.Locked)select user).ToList();
             comboBoxUserName.DisplayMember = "UserFullName";
             comboBoxUserName.ValueMember = "UserName";
             //foreach(User user in vTaskManager.Storage.Users){

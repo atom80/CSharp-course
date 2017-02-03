@@ -40,7 +40,7 @@ namespace TaskManagerCore {
                     vUserSessions.Remove(session);
                 }
             }
-            if ((SessionChangedEvent != null)&&((session.SessionType==UserSessionTypes.Automatic) || (!vIsInShutdown))) { // RRR
+            if ((SessionChangedEvent != null) && ((session.SessionType == UserSessionTypes.Automatic) || (!vIsInShutdown))) { // RRR
                 SessionChangedEvent(session, e);
             }
         }
@@ -70,7 +70,7 @@ namespace TaskManagerCore {
                 //bgUserName = string.Format("BackgroundUser{0}", i);
                 //bgUser=vAuthenticator.AuthenticateUserByPassword(bgUserName,bgUserName); // cheat
                 bgUser = vStorage.Users[i];
-                if (bgUser == vMainUserSession.SessionUser) { continue; }
+                if ((bgUser == vMainUserSession.SessionUser) || (bgUser.UserState == UserStates.Locked)) { continue; }
                 bgUserSession = new UserSession(null, UserSessionTypes.Automatic, bgUser);
                 lock (this) { vUserSessions.Add(bgUserSession); }
                 bgUserSession.SessionChangedEvent += SessionChangedHandler;

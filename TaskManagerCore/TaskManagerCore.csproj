@@ -48,6 +48,7 @@
     <Compile Include="DevTask.cs" />
     <Compile Include="Feature.cs" />
     <Compile Include="IAuthenticator.cs" />
+    <Compile Include="IPersistent.cs" />
     <Compile Include="ITask.cs" />
     <Compile Include="Manager.cs" />
     <Compile Include="Project.cs" />
